@@ -1218,7 +1218,7 @@ body {
 
 .cmd-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 1.15rem;
   margin-top: 1.5rem;
   width: 100%;
@@ -3435,7 +3435,7 @@ body {
 
 .cheatsheet-content-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 1.25rem;
 }
 
@@ -3523,9 +3523,14 @@ body {
 }
 
 /* ===================================================================
-   RESPONSIVE MEDIA QUERIES (Laptop, Tablet & Smartphone)
+   RESPONSIVE MEDIA QUERIES (Desktop, Laptop, Tablet & Smartphone)
    =================================================================== */
+
+/* 1. LAPTOPS & SMALL SCREENS (<= 1200px) */
 @media (max-width: 1200px) {
+  .navbar .container {
+    padding: 0 1rem;
+  }
   .nav-btn {
     padding: 0.38rem 0.55rem;
     font-size: 0.76rem;
@@ -3540,11 +3545,32 @@ body {
   .badge-pill-hot {
     display: none;
   }
+  .app-grid-layout {
+    grid-template-columns: 300px 1fr;
+    gap: 1.25rem;
+  }
 }
 
+/* 2. TABLETS LANDSCAPE & IPAD PRO (<= 1024px) */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+  .quest-layout-grid {
+    grid-template-columns: 260px 1fr;
+    gap: 1rem;
+  }
+  .calc-inputs-grid {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 0.65rem;
+  }
+}
+
+/* 3. TABLETS PORTRAIT & IPAD (<= 992px) */
 @media (max-width: 992px) {
   body {
-    padding-bottom: 72px; /* Safe space for bottom nav */
+    padding-bottom: 74px; /* Safe space for bottom nav dock */
   }
 
   .nav-navlinks {
@@ -3576,8 +3602,30 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .quest-levels-map {
+    flex-direction: row;
+    overflow-x: auto;
+    max-height: none;
+    padding: 0.6rem;
+    gap: 0.55rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .quest-levels-map::-webkit-scrollbar {
+    display: none;
+  }
+
+  .quest-level-item {
+    min-width: 200px;
+    flex-shrink: 0;
+  }
+
   .quiz-hud-bar {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
   }
 
   .troubleshoot-hud-bar {
@@ -3586,6 +3634,7 @@ body {
   }
 }
 
+/* 4. LARGE SMARTPHONES & PHABLETS (<= 768px) */
 @media (max-width: 768px) {
   .container {
     padding-left: 0.85rem;
@@ -3597,7 +3646,8 @@ body {
     gap: 0.15rem;
   }
 
-  .mobile-nav-btn i {
+  .mobile-nav-btn i,
+  .mobile-nav-btn svg {
     width: 17px;
     height: 17px;
   }
@@ -3612,6 +3662,7 @@ body {
 
   .hero-title {
     font-size: 1.7rem;
+    line-height: 1.3;
   }
 
   .hero-desc {
@@ -3652,6 +3703,33 @@ body {
     font-size: 0.75rem;
   }
 
+  .sandbox-terminal-body {
+    height: clamp(260px, 45vh, 360px);
+    padding: 0.85rem;
+    font-size: 0.82rem;
+  }
+
+  .sandbox-input-line {
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .sandbox-cli-input {
+    font-size: 16px; /* Prevents iOS auto-zoom */
+  }
+
+  .search-input {
+    font-size: 16px; /* Prevents iOS auto-zoom */
+  }
+
+  .cmd-palette-modal {
+    padding: 2rem 0.75rem 1rem;
+  }
+
+  .cmd-palette-input {
+    font-size: 16px; /* Prevents iOS auto-zoom */
+  }
+
   .workspace-container {
     padding: 1.15rem;
     border-radius: var(--radius-md);
@@ -3688,6 +3766,14 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .tb-card {
+    padding: 1.15rem 1rem;
+  }
+
+  .quiz-card-box {
+    padding: 1.15rem 1rem;
+  }
+
   .toast-notice {
     bottom: 4.75rem;
     right: 0.75rem;
@@ -3697,21 +3783,28 @@ body {
   }
 }
 
+/* 5. STANDARD SMARTPHONES (<= 480px) */
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 1.5rem;
+    font-size: 1.42rem;
+  }
+
+  .brand-title {
+    font-size: 0.95rem;
+  }
+
+  .brand-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .badge-tkj {
+    font-size: 0.58rem;
+    padding: 0.1rem 0.4rem;
   }
 
   .calc-results-grid {
     grid-template-columns: 1fr;
-  }
-
-  .brand-title {
-    font-size: 1rem;
-  }
-
-  .badge-tkj {
-    font-size: 0.6rem;
   }
 
   .terminal-top-bar {
@@ -3737,39 +3830,56 @@ body {
 
   .quiz-hud-bar {
     grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
+    gap: 0.45rem;
   }
 
   .troubleshoot-hud-bar {
     grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
+    gap: 0.45rem;
   }
 
-  .troubleshoot-hud-bar .hud-stat-item {
-    padding: 0.6rem 0.65rem;
+  .troubleshoot-hud-bar .hud-stat-item,
+  .quiz-hud-bar .hud-stat-item {
+    padding: 0.55rem 0.6rem;
   }
 
-  .troubleshoot-hud-bar .hud-label {
-    font-size: 0.7rem;
+  .troubleshoot-hud-bar .hud-label,
+  .quiz-hud-bar .hud-label {
+    font-size: 0.68rem;
     line-height: 1.25;
     margin-bottom: 0.2rem;
   }
 
-  .troubleshoot-hud-bar .hud-value {
+  .troubleshoot-hud-bar .hud-value,
+  .quiz-hud-bar .hud-value {
     font-size: 0.95rem;
   }
 
-  .hud-value {
-    font-size: 1.15rem;
-  }
-
   .quest-player-bar {
-    padding: 0.85rem;
-    gap: 0.75rem;
+    padding: 0.75rem;
+    gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .quest-progress-overview {
     max-width: 100%;
+  }
+
+  .quest-level-item {
+    min-width: 175px;
+    padding: 0.55rem 0.65rem;
+  }
+
+  .tb-opt-btn {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.82rem;
+    gap: 0.5rem;
+  }
+
+  .quiz-opt-btn {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.82rem;
+    gap: 0.5rem;
   }
 
   .topo-modal {
@@ -3778,6 +3888,27 @@ body {
 
   .topo-modal-dialog {
     max-height: 95vh;
+  }
+}
+
+/* 6. COMPACT SMARTPHONES (<= 360px) */
+@media (max-width: 360px) {
+  .mobile-nav-btn {
+    min-width: 36px;
+    padding: 0.25rem 0.1rem;
+  }
+
+  .mobile-nav-btn span {
+    font-size: 0.55rem;
+    letter-spacing: -0.4px;
+  }
+
+  .hero-title {
+    font-size: 1.28rem;
+  }
+
+  .brand-title {
+    font-size: 0.88rem;
   }
 }
 
