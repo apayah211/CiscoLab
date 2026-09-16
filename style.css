@@ -1736,43 +1736,73 @@ body {
 .quiz-filter-row {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.65rem;
   overflow-x: auto;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
   margin-bottom: 1.25rem;
   scrollbar-width: none;
+  -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+.quiz-filter-row::-webkit-scrollbar {
+  display: none;
 }
 
 .quiz-filter-label {
   font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text-muted);
+  font-weight: 800;
+  color: var(--text-dim);
   white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .quiz-filter-chips {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.55rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.15rem 0.1rem;
+}
+
+.quiz-filter-chips::-webkit-scrollbar {
+  display: none;
 }
 
 .q-chip {
   background: #f1f5f9;
-  border: 1px solid var(--border-color);
-  color: var(--text-muted);
-  padding: 0.35rem 0.75rem;
+  border: 1.5px solid #cbd5e1;
+  color: var(--text-main);
+  padding: 0.42rem 0.85rem;
   border-radius: 99px;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.q-chip:hover {
+  background: #e2e8f0;
+  color: var(--cisco-navy);
 }
 
 .q-chip.active {
-  background: #0070ba;
+  background: linear-gradient(135deg, #0070ba, #049fd9);
   color: #ffffff;
   border-color: #0070ba;
+  box-shadow: 0 4px 12px rgba(0, 112, 186, 0.25);
 }
 
 .quiz-card-box {
@@ -3009,8 +3039,17 @@ body {
 .sandbox-device-pills {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 0.55rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  padding-bottom: 0.25rem;
+}
+
+.sandbox-device-pills::-webkit-scrollbar {
+  display: none;
 }
 
 .sandbox-dev-btn {
@@ -3018,14 +3057,16 @@ body {
   border: 1.5px solid #cbd5e1;
   color: var(--text-muted);
   border-radius: 99px;
-  padding: 0.4rem 0.85rem;
+  padding: 0.42rem 0.85rem;
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   transition: var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .sandbox-dev-btn.active {
@@ -3080,19 +3121,33 @@ body {
 
 .sandbox-missions-chips {
   display: flex;
-  gap: 0.45rem;
+  gap: 0.55rem;
   overflow-x: auto;
-  padding-bottom: 0.35rem;
+  padding-bottom: 0.4rem;
   scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+.sandbox-missions-chips::-webkit-scrollbar {
+  display: none;
 }
 
 .mission-chip {
   background: #ffffff;
   border: 1.5px solid #cbd5e1;
   color: var(--text-main);
-  padding: 0.35rem 0.75rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 8px;
   font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
@@ -3201,28 +3256,51 @@ body {
 .sandbox-quick-keys-row {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.55rem;
   overflow-x: auto;
-  padding-bottom: 0.35rem;
+  padding: 0.45rem 0.15rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+.sandbox-quick-keys-row::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-keys-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-right: 0.2rem;
 }
 
 .quick-cmd-key {
   background: #ffffff;
-  border: 1px solid #cbd5e1;
+  border: 1.5px solid #cbd5e1;
   color: var(--cisco-navy);
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 0.3rem 0.65rem;
-  border-radius: 6px;
+  padding: 0.38rem 0.75rem;
+  border-radius: 8px;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .quick-cmd-key:hover {
   border-color: var(--cisco-blue);
+  color: var(--cisco-blue);
   background: #f0f9ff;
+  transform: translateY(-1px);
 }
 
 /* ===================================================================
@@ -3501,6 +3579,11 @@ body {
   .quiz-hud-bar {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .troubleshoot-hud-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -3515,12 +3598,12 @@ body {
   }
 
   .mobile-nav-btn i {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
   }
 
   .mobile-nav-btn span {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
   }
 
   .hero-section {
@@ -3539,6 +3622,34 @@ body {
   .search-filter-box {
     padding: 0.75rem;
     border-radius: var(--radius-md);
+  }
+
+  .sandbox-toolbar {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .sandbox-device-pills {
+    width: 100%;
+  }
+
+  .sandbox-dev-btn {
+    padding: 0.38rem 0.75rem;
+    font-size: 0.76rem;
+  }
+
+  .sandbox-missions-box {
+    padding: 0.85rem;
+  }
+
+  .sandbox-quick-keys-row {
+    padding: 0.35rem 0;
+    gap: 0.45rem;
+  }
+
+  .quick-cmd-key {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
   }
 
   .workspace-container {
@@ -3627,6 +3738,25 @@ body {
   .quiz-hud-bar {
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
+  }
+
+  .troubleshoot-hud-bar {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .troubleshoot-hud-bar .hud-stat-item {
+    padding: 0.6rem 0.65rem;
+  }
+
+  .troubleshoot-hud-bar .hud-label {
+    font-size: 0.7rem;
+    line-height: 1.25;
+    margin-bottom: 0.2rem;
+  }
+
+  .troubleshoot-hud-bar .hud-value {
+    font-size: 0.95rem;
   }
 
   .hud-value {
