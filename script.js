@@ -3,8 +3,11 @@
 // ===================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Helper untuk mendapatkan modulesData secara aman
+  const getModules = () => (typeof modulesData !== "undefined" && Array.isArray(modulesData)) ? modulesData : [];
+
   // 1. Inisialisasi State Modul
-  let currentModuleId = modulesData[0]?.id || "modul-1";
+  let currentModuleId = getModules()[0]?.id || "modul-1";
   let currentCategory = "all";
   let activeTabDeviceIndex = 0;
 
@@ -42,12 +45,33 @@ document.addEventListener("DOMContentLoaded", () => {
     modulesListContainer.innerHTML = "";
 
     if (filteredList.length === 0) {
+      const isMissingData = typeof modulesData === "undefined";
       modulesListContainer.innerHTML = `
         <div style="text-align: center; padding: 2rem 1rem; color: var(--text-dim);">
-          <i data-lucide="folder-search" style="width: 36px; height: 36px; margin: 0 auto 0.5rem;"></i>
-          <p style="font-size: 0.85rem;">Tidak ada modul yang sesuai pencarian.</p>
+          <i data-lucide="${isMissingData ? 'alert-triangle' : 'folder-search'}" style="width: 36px; height: 36px; margin: 0 auto 0.5rem; color: ${isMissingData ? 'var(--cisco-red)' : 'inherit'};"></i>
+          <p style="font-size: 0.85rem; font-weight: 600;">${isMissingData ? 'Data modul (data/modules.js) belum termuat.<br/><span style="font-weight:400; font-size:0.8rem;">Pastikan folder <code>data/</code> ikut terupload ke GitHub.</span>' : 'Tidak ada modul yang sesuai pencarian.'}</p>
         </div>
       `;
+      if (moduleWorkspace && isMissingData) {
+        moduleWorkspace.innerHTML = `
+          <div style="text-align: center; padding: 3rem 1.5rem;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
+            <h2 style="color: var(--cisco-navy); margin-bottom: 0.5rem;">File Data Belum Terupload di GitHub</h2>
+            <p style="color: var(--text-muted); max-width: 520px; margin: 0 auto 1.5rem; line-height: 1.6;">
+              Browser tidak dapat menemukan file di folder <code>data/</code> (seperti <code>modules.js</code>, <code>commands.js</code>, <code>quiz.js</code>, <code>quests.js</code>).
+            </p>
+            <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; max-width: 520px; margin: 0 auto; text-align: left; font-size: 0.88rem;">
+              <strong style="color: var(--cisco-navy);">Cara Mengatasinya di GitHub:</strong>
+              <ol style="margin-left: 1.25rem; margin-top: 0.5rem; line-height: 1.7; color: var(--text-main);">
+                <li>Buka halaman repository project Anda di <strong>GitHub</strong>.</li>
+                <li>Periksa apakah folder <strong>data</strong> sudah ada di sana.</li>
+                <li>Jika belum ada, klik <strong>Add file</strong> &rarr; <strong>Upload files</strong>, lalu seret folder <strong>data</strong> ke GitHub.</li>
+                <li>Klik <strong>Commit changes</strong> dan tunggu GitHub Pages selesai memperbarui (1-2 menit).</li>
+              </ol>
+            </div>
+          </div>
+        `;
+      }
       if (window.lucide) window.lucide.createIcons();
       return;
     }
@@ -121,7 +145,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (mobileSelect) {
     mobileSelect.addEventListener("change", (e) => {
       const selectedId = e.target.value;
-      const mod = modulesData.find(m => m.id === selectedId);
+      const allMods = getModules();
+      const mod = allMods.find(m => m.id === selectedId);
       if (mod) {
         currentModuleId = mod.id;
         activeTabDeviceIndex = 0;
@@ -559,6 +584,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initQuizEngine() {
     updateQuizStatsHUD();
+    if (typeof ciscoQuizBank === "undefined" || !Array.isArray(ciscoQuizBank) || ciscoQuizBank.length === 0) {
+      if (quizCardBox) {
+        quizCardBox.innerHTML = `
+          <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-dim);">
+            <i data-lucide="alert-triangle" style="width: 36px; height: 36px; margin: 0 auto 0.5rem; color: var(--cisco-gold);"></i>
+            <p style="font-weight: 700; color: var(--cisco-navy);">Data Bank Soal Kuis (data/quiz.js) belum termuat.</p>
+            <p style="font-size: 0.85rem; margin-top: 0.25rem;">Pastikan file <code>data/quiz.js</code> ikut terupload ke repository GitHub Anda.</p>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+      }
+      return;
+    }
+
     quizFilterChips.forEach(chip => {
       chip.addEventListener("click", () => {
         quizFilterChips.forEach(c => c.classList.remove("active"));
@@ -970,6 +1009,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initQuestGame() {
     updateQuestPlayerHUD();
+    if (typeof ciscoQuestLevels === "undefined" || !Array.isArray(ciscoQuestLevels) || ciscoQuestLevels.length === 0) {
+      if (questActiveArena) {
+        questActiveArena.innerHTML = `
+          <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-dim);">
+            <i data-lucide="alert-triangle" style="width: 36px; height: 36px; margin: 0 auto 0.5rem; color: var(--cisco-gold);"></i>
+            <p style="font-weight: 700; color: var(--cisco-navy);">Data Lab Quest (data/quests.js) belum termuat.</p>
+            <p style="font-size: 0.85rem; margin-top: 0.25rem;">Pastikan file <code>data/quests.js</code> ikut terupload ke repository GitHub Anda.</p>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+      }
+      return;
+    }
+
     renderQuestLevelsMap();
     renderActiveQuestArena();
 
@@ -996,6 +1049,19 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderDictionary(cmds) {
     if (!cmdCardsGrid) return;
     cmdCardsGrid.innerHTML = "";
+
+    if (!cmds || !Array.isArray(cmds) || cmds.length === 0) {
+      const isMissing = typeof ciscoCommands === "undefined";
+      cmdCardsGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; color: var(--text-dim);">
+          <i data-lucide="alert-circle" style="width: 36px; height: 36px; margin: 0 auto 0.5rem; color: var(--cisco-gold);"></i>
+          <p style="font-weight: 700; color: var(--cisco-navy);">${isMissing ? 'Data Perintah CLI (data/commands.js) belum termuat.' : 'Tidak ada perintah yang sesuai pencarian.'}</p>
+          ${isMissing ? '<p style="font-size: 0.85rem; margin-top: 0.25rem;">Pastikan file <code>data/commands.js</code> ikut terupload ke repository GitHub Anda.</p>' : ''}
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+      return;
+    }
 
     cmds.forEach(item => {
       const card = document.createElement("div");
@@ -1133,8 +1199,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===================================================================
   function applyFilters() {
     const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    const allMods = getModules();
 
-    const filtered = modulesData.filter((mod) => {
+    const filtered = allMods.filter((mod) => {
       const matchCat = currentCategory === "all" || mod.category === currentCategory;
       const matchSearch =
         !query ||
@@ -1158,7 +1225,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderWorkspace(filtered[0]);
     }
 
-    if (ciscoCommands) {
+    if (typeof ciscoCommands !== "undefined" && Array.isArray(ciscoCommands)) {
       const filteredCmds = ciscoCommands.filter(c => 
         !query ||
         c.command.toLowerCase().includes(query) ||
@@ -1167,6 +1234,8 @@ document.addEventListener("DOMContentLoaded", () => {
         c.category.toLowerCase().includes(query)
       );
       renderDictionary(filteredCmds);
+    } else {
+      renderDictionary([]);
     }
   }
 
@@ -1216,7 +1285,7 @@ document.addEventListener("DOMContentLoaded", () => {
       initQuizEngine();
     } else if (view === "dictionary") {
       sectionDictionary.classList.add("active");
-      renderDictionary(ciscoCommands);
+      renderDictionary(typeof ciscoCommands !== "undefined" ? ciscoCommands : []);
     } else if (view === "calculator") {
       sectionCalculator.classList.add("active");
       calculateSubnetAndRoute();
@@ -1259,5 +1328,5 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial Boot
   applyFilters();
   calculateSubnetAndRoute();
-  renderDictionary(ciscoCommands);
+  renderDictionary(typeof ciscoCommands !== "undefined" ? ciscoCommands : []);
 });

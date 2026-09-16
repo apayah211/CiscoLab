@@ -9,7 +9,9 @@
   <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -30,7 +32,7 @@
   <!-- NAVBAR -->
   <header class="navbar">
     <div class="container nav-wrap">
-      
+
       <!-- Brand Logo -->
       <a href="#home" class="brand-logo">
         <div class="brand-icon">
@@ -38,7 +40,7 @@
         </div>
         <div>
           <div class="brand-title">
-            CiscoLab <span class="badge-tkj">SMK TKJ</span>
+            CiscoLab <span class="badge-tkj">Schumi</span>
           </div>
           <span class="brand-subtitle">Packet Tracer Learning Hub</span>
         </div>
@@ -70,7 +72,8 @@
 
       <!-- Right Action Info -->
       <div class="nav-right-actions">
-        <a href="https://www.netacad.com/courses/packet-tracer" target="_blank" rel="noopener noreferrer" class="btn-icon-mode" title="Official Cisco Packet Tracer">
+        <a href="https://www.netacad.com/courses/packet-tracer" target="_blank" rel="noopener noreferrer"
+          class="btn-icon-mode" title="Official Cisco Packet Tracer">
           <i data-lucide="external-link"></i>
         </a>
       </div>
@@ -88,14 +91,17 @@
         Kuasai <span class="gradient-cisco">Cisco Packet Tracer</span><br />Lebih Cepat & Terarah
       </h1>
       <p class="hero-desc">
-        Pusat modul pembelajaran interaktif, kamus perintah Cisco IOS CLI, penjelasan logika routing (<code style="color:#0070ba; background:#e0f2fe; padding:0.15rem 0.5rem; border-radius:4px; font-weight:700;">ip route</code>, VLAN, OSPF), diagram topologi, dan salin perintah konfigurasi secara instan.
+        Pusat modul pembelajaran interaktif, kamus perintah Cisco IOS CLI, penjelasan logika routing (<code
+          style="color:#0070ba; background:#e0f2fe; padding:0.15rem 0.5rem; border-radius:4px; font-weight:700;">ip route</code>,
+        VLAN, OSPF), diagram topologi, dan salin perintah konfigurasi secara instan.
       </p>
 
       <!-- Search & Filter Controls -->
       <div class="search-filter-box">
         <div class="search-input-wrap">
           <i data-lucide="search"></i>
-          <input type="text" id="searchInput" class="search-input" placeholder="Cari topik (contoh: ip route, vlan, dhcp, ospf, trunk)..." />
+          <input type="text" id="searchInput" class="search-input"
+            placeholder="Cari topik (contoh: ip route, vlan, dhcp, ospf, trunk)..." />
         </div>
 
         <div class="filter-chips-row">
@@ -122,7 +128,7 @@
   <!-- VIEW 1: MODUL PRAKTIKUM & WORKSPACE -->
   <main class="main-app-section" id="sectionModules">
     <div class="container">
-      
+
       <!-- Mobile Quick Module Picker Dropdown (Khusus Smartphone) -->
       <div class="mobile-module-picker-wrap">
         <label for="mobileModuleSelect" class="mobile-picker-label">
@@ -166,7 +172,8 @@
         <span class="badge-category"><i data-lucide="terminal"></i> Cisco IOS Command Reference</span>
         <h2 style="font-size: 2rem; font-weight: 800; margin-top: 0.5rem;">Kamus & Penjelasan Perintah Cisco CLI</h2>
         <p style="color: var(--text-muted); max-width: 600px; margin: 0.5rem auto 0;">
-          Daftar referensi cepat seluruh sintaks perintah Cisco IOS yang sering diujikan pada praktikum lab dan Uji Kompetensi Keahlian (UKK) TKJ.
+          Daftar referensi cepat seluruh sintaks perintah Cisco IOS yang sering diujikan pada praktikum lab dan Uji
+          Kompetensi Keahlian (UKK) TKJ.
         </p>
       </div>
 
@@ -181,9 +188,12 @@
     <div class="container">
       <div style="text-align: center; margin-bottom: 2rem;">
         <span class="badge-category"><i data-lucide="calculator"></i> Helper Utility</span>
-        <h2 style="font-size: 2rem; font-weight: 800; margin-top: 0.5rem;">Kalkulator Subnetting & Generator 'ip route'</h2>
+        <h2 style="font-size: 2rem; font-weight: 800; margin-top: 0.5rem;">Kalkulator Subnetting & Generator 'ip route'
+        </h2>
         <p style="color: var(--text-muted); max-width: 650px; margin: 0.5rem auto 0;">
-          Hitung Network ID, Broadcast, Wildcard Mask secara instan dan buat baris perintah <code style="color:#0070ba; background:#e0f2fe; padding:0.15rem 0.5rem; border-radius:4px; font-weight:700;">ip route</code> yang siap disalin ke Packet Tracer.
+          Hitung Network ID, Broadcast, Wildcard Mask secara instan dan buat baris perintah <code
+            style="color:#0070ba; background:#e0f2fe; padding:0.15rem 0.5rem; border-radius:4px; font-weight:700;">ip route</code>
+          yang siap disalin ke Packet Tracer.
         </p>
       </div>
 
@@ -191,7 +201,8 @@
         <div class="calc-inputs-grid">
           <div class="calc-input-group">
             <label for="calcIpInput">Alamat IP / Jaringan Tujuan</label>
-            <input type="text" id="calcIpInput" class="calc-input-field" value="192.168.10.0" placeholder="192.168.10.0" />
+            <input type="text" id="calcIpInput" class="calc-input-field" value="192.168.10.0"
+              placeholder="192.168.10.0" />
           </div>
           <div class="calc-input-group">
             <label for="calcCidrInput">Prefix Subnet (CIDR)</label>
@@ -209,7 +220,8 @@
           </div>
           <div class="calc-input-group">
             <label for="calcNextHopInput">Next-Hop IP (Router Tetangga)</label>
-            <input type="text" id="calcNextHopInput" class="calc-input-field" value="10.10.10.2" placeholder="10.10.10.2" />
+            <input type="text" id="calcNextHopInput" class="calc-input-field" value="10.10.10.2"
+              placeholder="10.10.10.2" />
           </div>
         </div>
 
@@ -239,7 +251,8 @@
           </div>
           <div class="calc-stat-box">
             <div class="calc-stat-label">Rentang IP Host Valid</div>
-            <div class="calc-stat-val" id="resUsableRange" style="font-size:0.85rem;">192.168.10.1 - 192.168.10.254</div>
+            <div class="calc-stat-val" id="resUsableRange" style="font-size:0.85rem;">192.168.10.1 - 192.168.10.254
+            </div>
           </div>
           <div class="calc-stat-box">
             <div class="calc-stat-label">Jumlah Host Maksimal</div>
@@ -267,7 +280,7 @@
   <section class="main-app-section app-tab-view" id="sectionQuest" style="display: none;">
     <div class="container">
       <div class="quest-main-container">
-        
+
         <!-- Player Level HUD Header -->
         <div class="quest-player-bar">
           <div class="quest-player-info">
@@ -279,7 +292,7 @@
               <div class="quest-xp-text" id="questPlayerXp">0 XP Diperoleh</div>
             </div>
           </div>
-          
+
           <div class="quest-progress-overview">
             <div class="quest-progress-label">
               <span>Progres Lab Quest:</span>
@@ -297,7 +310,7 @@
 
         <!-- Quest Layout Grid (Level Map Sidebar + Active Quest Terminal Arena) -->
         <div class="quest-layout-grid">
-          
+
           <!-- Levels Map List -->
           <div class="quest-levels-map" id="questLevelsMap">
             <!-- Diisi list 8 level via JS -->
@@ -318,7 +331,7 @@
   <section class="main-app-section app-tab-view" id="sectionQuiz" style="display: none;">
     <div class="container">
       <div class="quiz-container">
-        
+
         <!-- Quiz Header & Stats HUD -->
         <div class="quiz-hud-bar">
           <div class="hud-stat-item">
@@ -341,7 +354,8 @@
 
         <!-- Quiz Category Filter Chips -->
         <div class="quiz-filter-row">
-          <span class="quiz-filter-label"><i data-lucide="filter" style="width: 14px; height: 14px; vertical-align: middle;"></i> Kategori Soal:</span>
+          <span class="quiz-filter-label"><i data-lucide="filter"
+              style="width: 14px; height: 14px; vertical-align: middle;"></i> Kategori Soal:</span>
           <div class="quiz-filter-chips" id="quizFilterChips">
             <button type="button" class="q-chip active" data-qcat="all">Semua Soal (Campuran)</button>
             <button type="button" class="q-chip" data-qcat="basic">Dasar IOS</button>
@@ -379,7 +393,8 @@
       </div>
       <div class="topo-modal-footer">
         <span style="font-size: 0.8rem; color: var(--text-muted);">
-          <i data-lucide="info" style="width: 14px; height: 14px; vertical-align: middle;"></i> Gunakan cubit (pinch) / zoom browser untuk mengecek detail IP & interface
+          <i data-lucide="info" style="width: 14px; height: 14px; vertical-align: middle;"></i> Gunakan cubit (pinch) /
+          zoom browser untuk mengecek detail IP & interface
         </span>
         <button type="button" class="btn-topo-modal-done" id="btnTopoModalDone">Tutup Topologi</button>
       </div>
@@ -419,7 +434,8 @@
   <!-- FOOTER -->
   <footer class="app-footer">
     <div class="container">
-      <p>&copy; 2026 <strong>CiscoLab TKJ</strong>. Dibuat untuk mempermudah belajar Cisco Packet Tracer siswa SMK Jurusan Teknik Komputer & Jaringan.</p>
+      <p>&copy; 2026 <strong>CiscoLab TKJ</strong>. Dibuat untuk mempermudah belajar Cisco Packet Tracer siswa SMK
+        Jurusan Teknik Komputer & Jaringan.</p>
     </div>
   </footer>
 
