@@ -1,11 +1,13 @@
 // ===================================================================
-// CISCOLAB TKJ - ALL-IN-ONE STANDALONE ENGINE
-// Menggabungkan Seluruh Data (Modul, Kamus, Kuis, Quest) & Logika Interaktif
-// Standalone Bundle - Anti 404 Error pada GitHub Pages & Local Hosting
+// CISCOLAB TKJ - ALL-IN-ONE STANDALONE ENGINE V2.0
+// Modules (9 Labs), Command Reference, Quiz Bank, Quest Game,
+// Troubleshoot Simulator, Web CLI Sandbox, & Printable Cheatsheet
 // ===================================================================
 
+
+
 // ===================================================================
-// 1. DATA: MODUL PRAKTIKUM CISCO IOS
+// 1. DATA: MODUL PRAKTIKUM CISCO IOS (9 MODUL LENGKAP)
 // ===================================================================
 // ===================================================================
 // DATABASE MODUL PRAKTIKUM CISCO PACKET TRACER (SMK TKJ)
@@ -1020,9 +1022,298 @@ O    192.168.30.0/24 [110/2] via 20.20.20.2, 00:02:15, GigabitEthernet0/2`
       correctIndex: 1,
       explanation: "Wildcard mask dihitung dengan 255.255.255.255 - 255.255.255.240 = 0.0.0.15."
     }
-  }
-];
+  },
 
+  // --- MODUL 7: NAT OVERLOAD (PAT) ---
+  {
+    id: "modul-7",
+    number: "07",
+    title: "Konfigurasi NAT Overload (PAT) untuk Akses Internet Publik",
+    category: "services",
+    categoryLabel: "Services (NAT/PAT)",
+    level: "Menengah",
+    levelClass: "badge-level-intermediate",
+    estTime: "30 Menit",
+    description: "Hubungkan seluruh komputer di jaringan LAN privat ke internet publik menggunakan 1 IP Public dengan teknologi NAT Overload (Port Address Translation).",
+    devices: ["Router-Gateway", "Switch-LAN", "PC-Admin", "PC-Staff", "Server-Internet (ISP)"],
+    topology: {
+      summary: "Router Cisco 2911 menghubungkan LAN (192.168.10.0/24) via G0/0 (ip nat inside) ke ISP (209.165.200.224/30) via G0/1 (ip nat outside).",
+      ascii: `
+  [ PC1: 192.168.10.10 ] ---\
+                              [ Switch-LAN ] --- (G0/0: Inside) [ Router-Gateway ] (G0/1: Outside) --- [ ISP / Server: 8.8.8.8 ]
+  [ PC2: 192.168.10.20 ] ---/                  192.168.10.1                 209.165.200.225
+      `,
+      svg: `<svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="background:#f8fafc; border-radius:8px;">
+        <rect x="20" y="40" width="110" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="75" y="70" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0b2545">PC1 (Admin)</text>
+        <text x="75" y="86" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#64748b">192.168.10.10</text>
+
+        <rect x="20" y="140" width="110" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="75" y="170" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0b2545">PC2 (Staff)</text>
+        <text x="75" y="186" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#64748b">192.168.10.20</text>
+
+        <rect x="200" y="90" width="120" height="60" rx="8" fill="#e0f2fe" stroke="#0070ba" stroke-width="2"/>
+        <text x="260" y="120" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="#0070ba">Switch-LAN (2960)</text>
+        <text x="260" y="136" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#0284c7">VLAN 1 Default</text>
+
+        <rect x="380" y="90" width="130" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="445" y="118" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="#b45309">Router-Gateway</text>
+        <text x="445" y="134" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#92400e">NAT Overload (PAT)</text>
+
+        <rect x="560" y="90" width="120" height="60" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="620" y="120" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="#059669">ISP / Cloud</text>
+        <text x="620" y="136" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#047857">Server: 8.8.8.8</text>
+
+        <line x1="130" y1="70" x2="200" y2="110" stroke="#0070ba" stroke-width="2"/>
+        <line x1="130" y1="170" x2="200" y2="130" stroke="#0070ba" stroke-width="2"/>
+        <line x1="320" y1="120" x2="380" y2="120" stroke="#0070ba" stroke-width="2.5"/>
+        <line x1="510" y1="120" x2="560" y2="120" stroke="#e2231a" stroke-width="2.5" stroke-dasharray="4"/>
+      </svg>`
+    },
+    ipTable: [
+      { device: "PC1 (Admin)", iface: "FastEthernet0", ip: "192.168.10.10", netmask: "255.255.255.0", gateway: "192.168.10.1" },
+      { device: "PC2 (Staff)", iface: "FastEthernet0", ip: "192.168.10.20", netmask: "255.255.255.0", gateway: "192.168.10.1" },
+      { device: "Router-Gateway", iface: "GigabitEthernet0/0 (Inside)", ip: "192.168.10.1", netmask: "255.255.255.0", gateway: "-" },
+      { device: "Router-Gateway", iface: "GigabitEthernet0/1 (Outside)", ip: "209.165.200.225", netmask: "255.255.255.252", gateway: "209.165.200.226 (ISP)" },
+      { device: "Server-ISP", iface: "FastEthernet0", ip: "8.8.8.8", netmask: "255.255.255.0", gateway: "209.165.200.225" }
+    ],
+    packetFlow: {
+      title: "Alur Translasi NAT Overload (PAT)",
+      steps: [
+        { num: 1, badge: "LAN Private", title: "PC Kirim Paket ke 8.8.8.8", desc: "PC1 mengirim paket dengan Source IP privat 192.168.10.10 dan port acak :49152.", device: "PC1 (Admin)" },
+        { num: 2, badge: "NAT Inside", title: "Router Terima di G0/0", desc: "Paket masuk interface 'ip nat inside', router memeriksa apakah Source IP diizinkan oleh Access-List 1.", device: "Router-Gateway" },
+        { num: 3, badge: "PAT Translasi", title: "Translasi ke IP Publik", desc: "Router mengganti Source IP menjadi 209.165.200.225 dan memetakan port unik pada tabel NAT Translations.", device: "Router-Gateway" },
+        { num: 4, badge: "Internet", title: "Server Balas ke IP Publik", desc: "Server membalas ke 209.165.200.225, router mengembalikan IP tujuan asli ke 192.168.10.10.", device: "Server-ISP" }
+      ]
+    },
+    theory: {
+      explanation: "NAT (Network Address Translation) Overload atau PAT memungkinkan ratusan perangkat ber-IP Privat berbagi 1 IP Publik untuk browsing internet dengan membedakan nomor port.",
+      points: [
+        { term: "Inside vs Outside", desc: "'ip nat inside' ditandai pada port LAN privat, sedangkan 'ip nat outside' pada port WAN/Internet." },
+        { term: "Access-List (ACL)", desc: "ACL digunakan untuk mendefinisikan network privat mana saja yang boleh ditranslasikan oleh NAT." },
+        { term: "Keyword 'overload'", desc: "Menambahkan kata 'overload' di akhir baris NAT adalah kunci mengaktifkan mode PAT (Port Address Translation)." }
+      ]
+    },
+    cliSteps: [
+      {
+        device: "Router-Gateway",
+        description: "Konfigurasi IP Interface, ACL 1, dan NAT Overload",
+        commands: [
+          { cmd: "enable", note: "Masuk ke Privileged Mode" },
+          { cmd: "configure terminal", note: "Masuk ke Global Config" },
+          { cmd: "interface gigabitEthernet 0/0", note: "Konfigurasi port LAN" },
+          { cmd: "ip address 192.168.10.1 255.255.255.0", note: "IP Gateway LAN" },
+          { cmd: "ip nat inside", note: "Tandai interface sebagai NAT Inside (LAN)" },
+          { cmd: "no shutdown", note: "Aktifkan port" },
+          { cmd: "exit", note: "Kembali ke config" },
+          { cmd: "interface gigabitEthernet 0/1", note: "Konfigurasi port WAN ke ISP" },
+          { cmd: "ip address 209.165.200.225 255.255.255.252", note: "IP Publik WAN" },
+          { cmd: "ip nat outside", note: "Tandai interface sebagai NAT Outside (Internet)" },
+          { cmd: "no shutdown", note: "Aktifkan port" },
+          { cmd: "exit", note: "Kembali ke config" },
+          { cmd: "access-list 1 permit 192.168.10.0 0.0.0.255", note: "Izinkan seluruh host LAN 192.168.10.0/24" },
+          { cmd: "ip nat inside source list 1 interface gigabitEthernet 0/1 overload", note: "Aktifkan NAT Overload ke port G0/1" },
+          { cmd: "ip route 0.0.0.0 0.0.0.0 209.165.200.226", note: "Default route ke Gateway ISP" },
+          { cmd: "write memory", note: "Simpan konfigurasi ke NVRAM" }
+        ]
+      }
+    ],
+    verification: [
+      {
+        cmd: "show ip nat translations",
+        purpose: "Melihat tabel sesi translasi IP privat ke IP publik secara real-time",
+        sampleOutput: `Pro Inside global      Inside local       Outside local      Outside global\nicmp 209.165.200.225:1 192.168.10.10:1    8.8.8.8:1          8.8.8.8:1\ntcp 209.165.200.225:49152 192.168.10.20:49152 8.8.8.8:80      8.8.8.8:80`
+      },
+      {
+        cmd: "show ip nat statistics",
+        purpose: "Melihat total translasi NAT yang berhasil dan aktif",
+        sampleOutput: `Total active translations: 2 (0 static, 2 dynamic; 2 extended)\nOutside interfaces: GigabitEthernet0/1\nInside interfaces: GigabitEthernet0/0\nHits: 18  Misses: 2`
+      }
+    ]
+  },
+
+  // --- MODUL 8: STANDARD & EXTENDED ACL ---
+  {
+    id: "modul-8",
+    number: "08",
+    title: "Filter Keamanan Trafik Jaringan dengan Access Control List (ACL)",
+    category: "services",
+    categoryLabel: "Security & Filter",
+    level: "Mahir",
+    levelClass: "badge-level-advanced",
+    estTime: "35 Menit",
+    description: "Batasi akses ke server sensitif dan blokir host tertentu menggunakan Standard ACL (Nomor 1-99) dan Extended ACL (Nomor 100-199).",
+    devices: ["Router-Security", "Switch0", "PC-Admin", "PC-Blokir", "Web-Server-HTTP"],
+    topology: {
+      summary: "Standard ACL 10 memblokir PC-Blokir (192.168.10.50), Extended ACL 100 mengizinkan hanya port 80 (HTTP) ke Web Server (192.168.20.100).",
+      ascii: `
+  [ PC-Admin: .10 ]   ---\
+                          [ Switch ] --- [ Router-Security ] --- [ Web-Server: 192.168.20.100 (Port 80) ]
+  [ PC-Blokir: .50 ]  ---/
+      `,
+      svg: `<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="background:#f8fafc; border-radius:8px;">
+        <rect x="30" y="30" width="120" height="55" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="90" y="58" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#065f46">PC-Admin (Boleh)</text>
+        <text x="90" y="74" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#047857">192.168.10.10</text>
+
+        <rect x="30" y="130" width="120" height="55" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+        <text x="90" y="158" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#991b1b">PC-Blokir (Deny)</text>
+        <text x="90" y="174" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#dc2626">192.168.10.50</text>
+
+        <rect x="220" y="80" width="110" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="275" y="115" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="#0b2545">Switch-LAN</text>
+
+        <rect x="390" y="80" width="130" height="60" rx="8" fill="#e0f2fe" stroke="#0070ba" stroke-width="2"/>
+        <text x="455" y="110" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="#0070ba">Router-Security</text>
+        <text x="455" y="126" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0284c7">ACL 10 & 100 Filter</text>
+
+        <rect x="570" y="80" width="110" height="60" rx="8" fill="#fdf4ff" stroke="#a855f7" stroke-width="2"/>
+        <text x="625" y="110" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="#7e22ce">Web Server</text>
+        <text x="625" y="126" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b21a8">192.168.20.100:80</text>
+
+        <line x1="150" y1="58" x2="220" y2="100" stroke="#10b981" stroke-width="2"/>
+        <line x1="150" y1="158" x2="220" y2="120" stroke="#ef4444" stroke-width="2"/>
+        <line x1="330" y1="110" x2="390" y2="110" stroke="#0070ba" stroke-width="2.5"/>
+        <line x1="520" y1="110" x2="570" y2="110" stroke="#a855f7" stroke-width="2.5"/>
+      </svg>`
+    },
+    ipTable: [
+      { device: "PC-Admin", iface: "FastEthernet0", ip: "192.168.10.10", netmask: "255.255.255.0", gateway: "192.168.10.1" },
+      { device: "PC-Blokir", iface: "FastEthernet0", ip: "192.168.10.50", netmask: "255.255.255.0", gateway: "192.168.10.1" },
+      { device: "Router-Security", iface: "GigabitEthernet0/0 (LAN)", ip: "192.168.10.1", netmask: "255.255.255.0", gateway: "-" },
+      { device: "Router-Security", iface: "GigabitEthernet0/1 (Server)", ip: "192.168.20.1", netmask: "255.255.255.0", gateway: "-" },
+      { device: "Web-Server", iface: "FastEthernet0", ip: "192.168.20.100", netmask: "255.255.255.0", gateway: "192.168.20.1" }
+    ],
+    packetFlow: {
+      title: "Alur Filter Paket oleh Access Control List",
+      steps: [
+        { num: 1, badge: "Inbound Check", title: "Paket Masuk Interface G0/0", desc: "Router memeriksa Access-List 10 yang diterapkan secara 'inbound' di interface G0/0.", device: "Router-Security" },
+        { num: 2, badge: "ACL Evaluation", title: "Pencocokan Aturan Baris per Baris", desc: "Jika Source IP = 192.168.10.50, paket langsung di-DROP. Jika bukan, lanjut ke aturan permit.", device: "Router-Security" },
+        { num: 3, badge: "Routing & Outbound", title: "Pemeriksaan Extended ACL 100", desc: "Di interface G0/1, Extended ACL memastikan paket hanya bertipe TCP Port 80 (HTTP).", device: "Router-Security" },
+        { num: 4, badge: "Delivery", title: "Paket Tiba di Web Server", desc: "Web server menerima request HTTP dan membalas halaman web ke PC-Admin.", device: "Web-Server" }
+      ]
+    },
+    theory: {
+      explanation: "ACL (Access Control List) adalah firewall dasar Cisco IOS untuk menyaring paket berdasarkan alamat IP pengirim, penerima, dan nomor port protokol.",
+      points: [
+        { term: "Standard ACL (1-99)", desc: "Hanya memeriksa Source IP (alamat asal) dan sebaiknya diletakkan sedekat mungkin dengan tujuan." },
+        { term: "Extended ACL (100-199)", desc: "Memeriksa Source IP, Destination IP, Protokol (TCP/UDP/ICMP), dan Nomor Port (Port 80 HTTP, 443 HTTPS, dll)." },
+        { term: "Implicit Deny Any", desc: "Setiap ACL memiliki aturan tersembunyi di baris paling bawah yang memblokir semua paket ('deny any'). Pastikan memberi permit untuk trafik yang diizinkan." }
+      ]
+    },
+    cliSteps: [
+      {
+        device: "Router-Security",
+        description: "Konfigurasi Standard ACL 10 dan Extended ACL 100",
+        commands: [
+          { cmd: "enable", note: "Masuk Privileged Mode" },
+          { cmd: "configure terminal", note: "Masuk Global Config" },
+          { cmd: "access-list 10 deny host 192.168.10.50", note: "Blokir khusus PC-Blokir" },
+          { cmd: "access-list 10 permit any", note: "Izinkan seluruh host LAN lainnya" },
+          { cmd: "interface gigabitEthernet 0/0", note: "Pilih interface LAN" },
+          { cmd: "ip access-group 10 in", note: "Terapkan ACL 10 secara inbound (masuk)" },
+          { cmd: "exit", note: "Kembali ke config" },
+          { cmd: "access-list 100 permit tcp 192.168.10.0 0.0.0.255 host 192.168.20.100 eq 80", note: "Hanya izinkan HTTP (Port 80) ke server" },
+          { cmd: "access-list 100 permit icmp any any", note: "Izinkan ping ICMP untuk uji koneksi" },
+          { cmd: "interface gigabitEthernet 0/1", note: "Pilih interface arah server" },
+          { cmd: "ip access-group 100 out", note: "Terapkan Extended ACL 100 secara outbound (keluar)" },
+          { cmd: "write memory", note: "Simpan konfigurasi ke NVRAM" }
+        ]
+      }
+    ],
+    verification: [
+      {
+        cmd: "show access-lists",
+        purpose: "Melihat daftar aturan ACL dan jumlah paket yang cocok (match count)",
+        sampleOutput: `Standard IP access list 10\n    10 deny   192.168.10.50 (4 matches)\n    20 permit any (12 matches)\nExtended IP access list 100\n    10 permit tcp 192.168.10.0 0.0.0.255 host 192.168.20.100 eq www (8 matches)\n    20 permit icmp any any (4 matches)`
+      }
+    ]
+  },
+
+  // --- MODUL 9: PORT SECURITY SWITCH 2960 ---
+  {
+    id: "modul-9",
+    number: "09",
+    title: "Pengamanan Port Switch Cisco 2960 dengan Port Security & Sticky MAC",
+    category: "switching",
+    categoryLabel: "Switching & Security",
+    level: "Menengah",
+    levelClass: "badge-level-intermediate",
+    estTime: "25 Menit",
+    description: "Cegah akses perangkat asing ilegal yang mencolokkan kabel ke port switch lab menggunakan Sticky MAC dan mode proteksi Shutdown.",
+    devices: ["Switch0 (2960)", "PC-Legal", "Laptop-Hacker"],
+    topology: {
+      summary: "Port Fa0/1 Switch hanya mengizinkan 1 MAC Address sah (Sticky). Jika dicabut dan dicolokkan Laptop Hacker, port otomatis mati (err-disabled).",
+      ascii: `
+  [ PC-Legal: MAC AAA.BBB ] === (Fa0/1: Sticky MAC) [ Switch Cisco 2960 ]
+  [ Laptop-Hacker: MAC CCC ] --X (Ditolak / Port Shutdown Otomatis)
+      `,
+      svg: `<svg viewBox="0 0 650 200" xmlns="http://www.w3.org/2000/svg" style="background:#f8fafc; border-radius:8px;">
+        <rect x="40" y="30" width="130" height="55" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="105" y="58" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#065f46">PC-Legal (Sah)</text>
+        <text x="105" y="74" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#047857">MAC: 0001.42A1.B901</text>
+
+        <rect x="40" y="115" width="130" height="55" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+        <text x="105" y="143" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#991b1b">Laptop-Hacker (Asing)</text>
+        <text x="105" y="159" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#dc2626">MAC: 0090.0C77.FA12</text>
+
+        <rect x="280" y="70" width="160" height="65" rx="8" fill="#e0f2fe" stroke="#0070ba" stroke-width="2"/>
+        <text x="360" y="100" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11.5" font-weight="800" fill="#0070ba">Switch0 (Cisco 2960)</text>
+        <text x="360" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0284c7">Port Fa0/1: Port Security</text>
+
+        <line x1="170" y1="58" x2="280" y2="95" stroke="#10b981" stroke-width="2.5"/>
+        <line x1="170" y1="143" x2="280" y2="110" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="4"/>
+      </svg>`
+    },
+    ipTable: [
+      { device: "PC-Legal", iface: "FastEthernet0", ip: "192.168.1.10", netmask: "255.255.255.0", gateway: "-" },
+      { device: "Laptop-Hacker", iface: "FastEthernet0", ip: "192.168.1.99", netmask: "255.255.255.0", gateway: "-" },
+      { device: "Switch0", iface: "FastEthernet0/1", ip: "Port Security Max: 1", netmask: "Sticky MAC", gateway: "Violation: Shutdown" }
+    ],
+    packetFlow: {
+      title: "Alur Kerja Proteksi Port Security",
+      steps: [
+        { num: 1, badge: "Sticky Learning", title: "PC-Legal Dicolokkan ke Fa0/1", desc: "Switch secara otomatis mencatat MAC Address PC-Legal ke dalam running-config (Sticky).", device: "Switch0" },
+        { num: 2, badge: "Authorized", title: "Trafik Sah Diteruskan", desc: "Frame dari PC-Legal diteruskan secara normal karena MAC Address-nya cocok dengan tabel keamanan.", device: "Switch0" },
+        { num: 3, badge: "Violation Trigger", title: "Kabel Dicabut & Dicolok Hacker", desc: "Laptop Hacker mengirim frame dengan MAC asing, melanggar batas maksimum 1 MAC pada port.", device: "Laptop-Hacker" },
+        { num: 4, badge: "Err-Disable", title: "Port Otomatis Dimatikan", desc: "Switch mengaktifkan mode Violation Shutdown: lampu port berubah merah dan masuk status err-disabled.", device: "Switch0" }
+      ]
+    },
+    theory: {
+      explanation: "Port Security adalah fitur keamanan layer 2 untuk mengunci port switch fisik hanya untuk MAC Address yang diizinkan guna mencegah pencurian koneksi fisik lab.",
+      points: [
+        { term: "Sticky MAC", desc: "Perintah 'mac-address sticky' mencatat MAC address perangkat yang pertama kali dicolokkan tanpa perlu mengetik manual." },
+        { term: "Mode Violation: Shutdown", desc: "Jika terjadi pelanggaran, port langsung mati otomatis (err-disabled) dan mengirim log alarm SNMP." },
+        { term: "Memulihkan Port Mati", desc: "Untuk menghidupkan kembali port yang err-disabled, administrator harus menjalankan 'shutdown' lalu 'no shutdown' pada port tersebut." }
+      ]
+    },
+    cliSteps: [
+      {
+        device: "Switch0 (2960)",
+        description: "Aktifkan Port Security Sticky & Mode Violation Shutdown",
+        commands: [
+          { cmd: "enable", note: "Masuk Privileged Mode" },
+          { cmd: "configure terminal", note: "Masuk Global Config" },
+          { cmd: "interface fastEthernet 0/1", note: "Pilih port yang akan diamankan" },
+          { cmd: "switchport mode access", note: "Wajib diubah ke mode access sebelum port-security" },
+          { cmd: "switchport port-security", note: "Aktifkan fitur port security pada interface" },
+          { cmd: "switchport port-security maximum 1", note: "Batasi maksimal hanya 1 MAC Address" },
+          { cmd: "switchport port-security mac-address sticky", note: "Rekam otomatis MAC address perangkat pertama" },
+          { cmd: "switchport port-security violation shutdown", note: "Matikan port jika ada MAC address asing" },
+          { cmd: "write memory", note: "Simpan ke NVRAM" }
+        ]
+      }
+    ],
+    verification: [
+      {
+        cmd: "show port-security interface fastEthernet 0/1",
+        purpose: "Melihat status aktif port security, MAC yang direkam, dan violation counter",
+        sampleOutput: `Port Security              : Enabled\nPort Status                : Secure-up\nViolation Mode             : Shutdown\nAging Time                 : 0 mins\nAging Type                 : Absolute\nSecureStatic Address Aging : Disabled\nMaximum MAC Addresses      : 1\nTotal MAC Addresses        : 1\nConfigured MAC Addresses   : 0\nSticky MAC Addresses       : 1\nLast Source Address:Vlan   : 0001.42A1.B901:1\nSecurity Violation Count   : 0`
+      }
+    ]
+  }
+
+];
 
 // ===================================================================
 // 2. DATA: KAMUS PERINTAH CISCO IOS CLI
@@ -1180,7 +1471,7 @@ const ciscoCommands = [
 
 
 // ===================================================================
-// 3. DATA: BANK SOAL KUIS ADAPTIF TKJ
+// 3. DATA: BANK SOAL KUIS ADAPTIF CISCO TKJ
 // ===================================================================
 // ===================================================================
 // CISCOLAB TKJ - BANK SOAL KUIS ADAPTIF & ENDLESS PRACTICE
@@ -2114,41 +2405,275 @@ if (typeof module !== "undefined") {
 }
 
 
-// ===================================================================
-// 5. LOGIKA APLIKASI & INTERAKTIF CONTROLLER ENGINE
-// ===================================================================
-// ===================================================================
-// CISCOLAB TKJ - INTERACTIVE LOGIC & CONTROLLER ENGINE
-// ===================================================================
 
+// ===================================================================
+// 5. DATA: STUDI KASUS TROUBLESHOOTING CISCO IOS (LAB ERROR SIMULATOR)
+// ===================================================================
+const ciscoTroubleshootCases = [
+  {
+    id: "tb-1",
+    category: "vlan",
+    categoryLabel: "VLAN & Trunk",
+    difficulty: "Menengah",
+    title: "Kasus 1: Inter-VLAN Routing RTO (PC Antar VLAN Gagal Ping)",
+    symptom: "PC1 (VLAN 10: 192.168.10.10) mencoba melakukan ping ke PC2 (VLAN 20: 192.168.20.20) melalui Router-on-a-Stick, namun outputnya selalu 'Request Timed Out (RTO)'. Konfigurasi sub-interface router dan access port switch sudah benar.",
+    outputTitle: "Output Perintah Diagnosa di Switch0:",
+    outputCmd: "Switch0# show interfaces trunk",
+    consoleOutput: `Port        Mode             Encapsulation  Status        Native vlan
+(Output kosong - Tidak ada interface yang berstatus Trunking!)
+
+Switch0# show running-config interface FastEthernet0/24
+interface FastEthernet0/24
+ switchport mode access
+! (Port Fa0/24 yang mengarah ke Router G0/0 masih berstatus Access Port)`,
+    question: "Berdasarkan telaah output terminal di atas, apa penyebab utama kegagalan Inter-VLAN Routing dan bagaimana perintah perbaikannya?",
+    options: [
+      "Port Fa0/24 switch ke Router belum diset sebagai Trunk. Solusi: Masuk ke int Fa0/24 lalu jalankan 'switchport mode trunk'.",
+      "Kabel antara Switch dan Router putus atau salah port. Solusi: Ganti kabel console ke kabel crossover.",
+      "Nomor VLAN di sub-interface router salah nomor enkapsulasi dot1q.",
+      "PC1 belum mengaktifkan firewall Windows."
+    ],
+    correctIndex: 0,
+    explanation: "Pada topologi Router-on-a-Stick, link fisik antara Switch dan Router wajib berupa 'Trunk Port' agar seluruh tag frame 802.1Q (VLAN 10 dan VLAN 20) dapat melintasi 1 kabel fisik yang sama.",
+    fixCommands: `Switch0(config)# interface fastEthernet 0/24
+Switch0(config-if)# switchport mode trunk
+Switch0(config-if)# exit
+Switch0# show interfaces trunk
+Port        Mode             Encapsulation  Status        Native vlan
+Fa0/24      on               802.1q         trunking      1`
+  },
+  {
+    id: "tb-2",
+    category: "dhcp",
+    categoryLabel: "DHCP & IP",
+    difficulty: "Mudah",
+    title: "Kasus 2: PC Klien Mendapat Alamat IP Otomatis 169.254.x.x (APIPA)",
+    symptom: "Seluruh PC di lab TKJ diatur ke mode 'DHCP Client', namun semua komputer tidak mendapatkan IP 192.168.10.x melainkan selalu mendapatkan IP 169.254.x.x (APIPA). DHCP Pool sudah dibuat di Router R1.",
+    outputTitle: "Output Perintah Diagnosa di Router R1:",
+    outputCmd: "R1# show ip interface brief",
+    consoleOutput: `Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     192.168.10.1    YES manual administratively down down    
+GigabitEthernet0/1     unassigned      YES unset  administratively down down    
+Vlan1                  unassigned      YES unset  administratively down down`,
+    question: "Mengapa DHCP Server router gagal membagikan IP address ke seluruh PC klien di LAN?",
+    options: [
+      "Interface GigabitEthernet0/0 router masih berstatus 'administratively down' karena administrator lupa menjalankan perintah 'no shutdown'.",
+      "Pool DHCP kehabisan IP address karena rentang subnet mask terlalu kecil.",
+      "Switch lab belum dibuatkan DHCP snooping.",
+      "Kabel LAN tidak terpasang dengan benar di kartu jaringan PC."
+    ],
+    correctIndex: 0,
+    explanation: "Secara default, seluruh port router Cisco berstatus mati ('administratively down'). Walaupun DHCP pool sudah lengkap dan IP sudah dipasang, port router tidak akan memancarkan paket DHCP Offer sebelum diaktifkan dengan 'no shutdown'.",
+    fixCommands: `R1(config)# interface gigabitEthernet 0/0
+R1(config-if)# no shutdown
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up`
+  },
+  {
+    id: "tb-3",
+    category: "routing",
+    categoryLabel: "Routing & Gateway",
+    difficulty: "Menengah",
+    title: "Kasus 3: Link WAN Serial R1 ke R2 Gagal Ping (Subnet Mask /30 Mismatch)",
+    symptom: "Router R1 (Jakarta) dan Router R2 (Bandung) dihubungkan lewat kabel Serial WAN link. Interface R1 ber-IP 10.10.10.1/30, namun ketika R1 mencoba ping ke IP interface R2 10.10.10.5/30, ping selalu 0% (.....).",
+    outputTitle: "Output Perintah Diagnosa di R1 & R2:",
+    outputCmd: "R1# ping 10.10.10.5",
+    consoleOutput: `Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 10.10.10.5, timeout is 2 seconds:
+.....
+Success rate is 0 percent (0/5)
+
+R2# show running-config interface Serial0/0/0
+interface Serial0/0/0
+ ip address 10.10.10.5 255.255.255.252`,
+    question: "Apa kekeliruan fatal pada pengalamatan IP prefix /30 di atas?",
+    options: [
+      "IP 10.10.10.5/30 berada pada Network ID yang berbeda (10.10.10.4/30), bukan satu segmen dengan 10.10.10.1/30 (Network 10.10.10.0/30). Pasangan sah 10.10.10.1 adalah 10.10.10.2.",
+      "Kabel Serial membutuhkan clock rate 64000 di kedua router sekaligus.",
+      "Prefix /30 tidak bisa digunakan pada interface Serial WAN.",
+      "Router R2 belum mengaktifkan OSPF routing protocol."
+    ],
+    correctIndex: 0,
+    explanation: "Prefix /30 (255.255.255.252) hanya memiliki 2 host per subnet. Subnet 10.10.10.0/30 memiliki IP host valid: 10.10.10.1 dan 10.10.10.2 (Broadcast: 10.10.10.3). IP 10.10.10.5 sudah masuk ke blok subnet berikutnya (10.10.10.4/30).",
+    fixCommands: `R2(config)# interface serial 0/0/0
+R2(config-if)# ip address 10.10.10.2 255.255.255.252
+R2(config-if)# exit
+R2# ping 10.10.10.1
+!!!!!
+Success rate is 100 percent (5/5)`
+  },
+  {
+    id: "tb-4",
+    category: "routing",
+    categoryLabel: "Routing & Gateway",
+    difficulty: "Mahir",
+    title: "Kasus 4: OSPF Neighbor Status Mentok di EXSTART / Gagal Terbentuk",
+    symptom: "Router R1 dan R2 sudah menjalankan routing dinamis OSPF Area 0, namun tabel routing R1 tidak pernah menerima rute dari R2. Saat dicek, status neighbor tidak pernah mencapai 'FULL'.",
+    outputTitle: "Output Perintah Diagnosa di Router R1:",
+    outputCmd: "R1# show ip ospf neighbor",
+    consoleOutput: `Neighbor ID     Pri   State           Dead Time   Address         Interface
+2.2.2.2           1   EXSTART/  -     00:00:33    10.10.10.2      GigabitEthernet0/0
+
+R1# show ip ospf interface gigabitEthernet 0/0
+GigabitEthernet0/0 is up, line protocol is up
+  Internet Address 10.10.10.1/24, Area 0, MTU 1500 bytes
+
+R2# show ip ospf interface gigabitEthernet 0/0
+GigabitEthernet0/0 is up, line protocol is up
+  Internet Address 10.10.10.2/24, Area 0, MTU 1400 bytes`,
+    question: "Apa penyebab status OSPF Neighbor stuck di status EXSTART dan bagaimana solusinya?",
+    options: [
+      "Ukuran MTU (Maximum Transmission Unit) pada interface G0/0 kedua router tidak sama (R1 MTU 1500, R2 MTU 1400). Solusi: Samakan MTU atau jalankan 'ip ospf mtu-ignore'.",
+      "Process ID OSPF di kedua router berbeda nomor.",
+      "OSPF mewajibkan interface berkecepatan 10 Gbps.",
+      "Router R1 kekurangan memori NVRAM."
+    ],
+    correctIndex: 0,
+    explanation: "Pada proses pembentukan DBD (Database Descriptor) OSPF di fase ExStart, router saling memverifikasi ukuran MTU. Jika MTU berbeda, router menolak bertukar LSDB dan status akan stuck di ExStart.",
+    fixCommands: `R2(config)# interface gigabitEthernet 0/0
+R2(config-if)# ip mtu 1500
+R2(config-if)# exit
+%OSPF-5-ADJCHG: Process 1, Nbr 2.2.2.2 on GigabitEthernet0/0 from EXSTART to FULL, Done`
+  },
+  {
+    id: "tb-5",
+    category: "routing",
+    categoryLabel: "Routing & Gateway",
+    difficulty: "Mudah",
+    title: "Kasus 5: Perintah 'ip route' Ditolak dengan Pesan 'Inconsistent Address and Mask'",
+    symptom: "Seorang siswa TKJ ingin menambahkan rute statis ke jaringan 192.168.10.0/24 melalui Next-Hop 10.10.10.2, namun saat mengetik perintah di Router(config)#, muncul pesan error % Inconsistent address and mask.",
+    outputTitle: "Error Console di CLI:",
+    outputCmd: "Router(config)# ip route 192.168.10.5 255.255.255.0 10.10.10.2",
+    consoleOutput: `% Inconsistent address and mask
+Router(config)#`,
+    question: "Mengapa router Cisco IOS menolak baris perintah 'ip route' tersebut?",
+    options: [
+      "Siswa memasukkan alamat IP Host (192.168.10.5) alih-alih Network ID (192.168.10.0) untuk subnet mask 255.255.255.0.",
+      "Sintaks ip route tidak mendukung next-hop IP.",
+      "Router harus dimatikan terlebih dahulu sebelum menambahkan rute.",
+      "Perintah ip route hanya boleh dijalankan di Privileged Mode (#)."
+    ],
+    correctIndex: 0,
+    explanation: "Pada perintah 'ip route', parameter pertama adalah Network Address (Network ID), bukan Host IP. Karena subnet mask-nya /24 (255.255.255.0), maka octet terakhir harus 0 (192.168.10.0).",
+    fixCommands: `Router(config)# ip route 192.168.10.0 255.255.255.0 10.10.10.2
+Router(config)# exit
+Router# show ip route static
+S    192.168.10.0/24 [1/0] via 10.10.10.2`
+  },
+  {
+    id: "tb-6",
+    category: "nat",
+    categoryLabel: "NAT & Security",
+    difficulty: "Mahir",
+    title: "Kasus 6: NAT Overload Berhasil Diset Tapi PC Klien Tidak Bisa Internet",
+    symptom: "Konfigurasi NAT Overload sudah dibuat lengkap di router gateway, namun PC di LAN (192.168.10.10) tetap tidak bisa ping ke internet 8.8.8.8. Output 'show ip nat translations' sama sekali tidak menampilkan baris sesi translasi.",
+    outputTitle: "Output Perintah Diagnosa di Router Gateway:",
+    outputCmd: "Gateway# show running-config | include nat",
+    consoleOutput: `ip nat inside source list 1 interface GigabitEthernet0/1 overload
+interface GigabitEthernet0/0
+ ip nat inside
+interface GigabitEthernet0/1
+ (Perintah 'ip nat outside' tidak ada di interface G0/1!)`,
+    question: "Apa kekurangan konfigurasi pada interface Router Gateway yang menyebabkan paket LAN tidak ditranslasikan?",
+    options: [
+      "Interface WAN G0/1 belum didefinisikan sebagai 'ip nat outside', sehingga router tidak tahu kemana arah translasi keluar.",
+      "Access list 1 harus menggunakan nomor 100 ke atas.",
+      "Kabel ISP harus dicolokkan ke port Console.",
+      "PC klien harus menggunakan IP Publik sebelum keluar router."
+    ],
+    correctIndex: 0,
+    explanation: "NAT Cisco IOS bekerja dengan membandingkan interface 'ip nat inside' (asal paket LAN) dan 'ip nat outside' (tujuan internet WAN). Jika port WAN tidak diberi perintah 'ip nat outside', proses translasi PAT tidak akan pernah dipicu.",
+    fixCommands: `Gateway(config)# interface gigabitEthernet 0/1
+Gateway(config-if)# ip nat outside
+Gateway(config-if)# exit
+Gateway# show ip nat translations
+Pro Inside global      Inside local       Outside local      Outside global
+icmp 209.165.200.225:1 192.168.10.10:1    8.8.8.8:1          8.8.8.8:1`
+  }
+];
+
+
+
+// ===================================================================
+// 6. DATA: CISCO IOS CLI CHEATSHEET & RANGKUMAN SAKTI UKK TKJ
+// ===================================================================
+const ciscoCheatsheetData = {
+  modes: [
+    { mode: "User EXEC", prompt: "Router>", desc: "Mode awal login, hanya bisa melihat status dasar dan melakukan ping/traceroute.", cmd: "enable" },
+    { mode: "Privileged EXEC", prompt: "Router#", desc: "Mode administrator penuh, dapat melihat konfigurasi dan menyimpan file.", cmd: "configure terminal" },
+    { mode: "Global Config", prompt: "Router(config)#", desc: "Mode pengaturan sistem global, hostname, routing, NAT, ACL.", cmd: "interface <name>" },
+    { mode: "Interface Config", prompt: "Router(config-if)#", desc: "Mode pengaturan port fisik, IP address, encapsulation, no shutdown.", cmd: "exit" },
+    { mode: "Router Config", prompt: "Router(config-router)#", desc: "Mode pengaturan routing dinamis (OSPF, RIP, EIGRP).", cmd: "exit" }
+  ],
+  subnets: [
+    { cidr: "/24", mask: "255.255.255.0", wildcard: "0.0.0.255", hosts: "254 Host", use: "LAN Standar Lab TKJ" },
+    { cidr: "/25", mask: "255.255.255.128", wildcard: "0.0.0.127", hosts: "126 Host", use: "2 Subnet Pembagian Lab" },
+    { cidr: "/26", mask: "255.255.255.192", wildcard: "0.0.0.63", hosts: "62 Host", use: "4 Subnet Departemen" },
+    { cidr: "/27", mask: "255.255.255.224", wildcard: "0.0.0.31", hosts: "30 Host", use: "Ruang Guru / Server" },
+    { cidr: "/28", mask: "255.255.255.240", wildcard: "0.0.0.15", hosts: "14 Host", use: "Kantor Admin / TU" },
+    { cidr: "/29", mask: "255.255.255.248", wildcard: "0.0.0.7", hosts: "6 Host", use: "Blok IP Publik ISP" },
+    { cidr: "/30", mask: "255.255.255.252", wildcard: "0.0.0.3", hosts: "2 Host", use: "Point-to-Point WAN Link" }
+  ],
+  topShowCmds: [
+    { cmd: "show ip interface brief", desc: "Melihat status ringkas seluruh port (IP, Status Up/Down, Protocol Up/Down)." },
+    { cmd: "show ip route", desc: "Melihat tabel routing aktif (C = Connected, S = Static, O = OSPF, R = RIP)." },
+    { cmd: "show running-config", desc: "Melihat seluruh konfigurasi aktif yang sedang berjalan di memori RAM." },
+    { cmd: "show vlan brief", desc: "Melihat daftar ID VLAN aktif beserta port switch yang terhubung (Switch)." },
+    { cmd: "show interfaces trunk", desc: "Melihat port switch mana saja yang sedang aktif dalam mode Trunking 802.1Q." },
+    { cmd: "show ip dhcp binding", desc: "Melihat daftar IP address yang berhasil disewa oleh PC klien dari server DHCP." },
+    { cmd: "show ip ospf neighbor", desc: "Melihat router tetangga yang berhasil membentuk hubungan ketetanggaan OSPF (FULL)." },
+    { cmd: "show ip nat translations", desc: "Melihat tabel pemetaan alamat IP privat yang sedang aktif keluar ke internet." },
+    { cmd: "show access-lists", desc: "Melihat aturan firewall ACL beserta jumlah paket yang cocok (matches)." },
+    { cmd: "show port-security int fa0/1", desc: "Melihat status pengamanan port switch fisik dan MAC address yang terkunci." }
+  ],
+  quickFormulas: [
+    { topic: "Static Route", formula: "ip route <Network-Tujuan> <Subnet-Mask> <Next-Hop-IP / Egress-Interface>" },
+    { topic: "OSPF Routing", formula: "router ospf 1 -> network <Network-ID> <Wildcard-Mask> area 0" },
+    { topic: "VLAN Trunking", formula: "interface fa0/24 -> switchport mode trunk" },
+    { topic: "Sub-Interface 802.1Q", formula: "interface g0/0.10 -> encapsulation dot1Q 10 -> ip address 192.168.10.1 255.255.255.0" },
+    { topic: "DHCP Server", formula: "ip dhcp excluded-address 192.168.1.1 192.168.1.10 -> ip dhcp pool LAN -> network 192.168.1.0 255.255.255.0 -> default-router 192.168.1.1" },
+    { topic: "NAT Overload (PAT)", formula: "access-list 1 permit <Network-LAN> <Wildcard> -> ip nat inside source list 1 interface <Port-WAN> overload" }
+  ]
+};
+
+
+
+// ===================================================================
+// 7. APP CONTROLLER & INTERACTIVE ENGINE
+// ===================================================================
 document.addEventListener("DOMContentLoaded", () => {
-  // Helper untuk mendapatkan modulesData secara aman
+  // Helper data getters
   const getModules = () => (typeof modulesData !== "undefined" && Array.isArray(modulesData)) ? modulesData : [];
+  const getCommands = () => (typeof ciscoCommands !== "undefined" && Array.isArray(ciscoCommands)) ? ciscoCommands : [];
+  const getTroubleshootCases = () => (typeof ciscoTroubleshootCases !== "undefined" && Array.isArray(ciscoTroubleshootCases)) ? ciscoTroubleshootCases : [];
 
-  // 1. Inisialisasi State Modul
+  // State Management
   let currentModuleId = getModules()[0]?.id || "modul-1";
   let currentCategory = "all";
   let activeTabDeviceIndex = 0;
+  let currentView = "modules";
 
-  // DOM Elements - Modul
+  // DOM Elements - Navigation & Views
+  const navBtns = document.querySelectorAll(".nav-btn");
+  const mobileNavBtns = document.querySelectorAll(".mobile-nav-btn");
+  const sectionModules = document.getElementById("sectionModules");
+  const sectionTroubleshoot = document.getElementById("sectionTroubleshoot");
+  const sectionSandbox = document.getElementById("sectionSandbox");
+  const sectionQuest = document.getElementById("sectionQuest");
+  const sectionQuiz = document.getElementById("sectionQuiz");
+  const sectionCheatsheet = document.getElementById("sectionCheatsheet");
+  const sectionDictionary = document.getElementById("sectionDictionary");
+  const sectionCalculator = document.getElementById("sectionCalculator");
+  const toastNotice = document.getElementById("toastNotice");
+
+  // DOM Elements - Modules
   const modulesListContainer = document.getElementById("modulesListContainer");
   const moduleWorkspace = document.getElementById("moduleWorkspace");
   const filterChips = document.querySelectorAll(".filter-chip");
   const searchInput = document.getElementById("searchInput");
   const moduleCounter = document.getElementById("moduleCounter");
-  
-  // Section Navigation Elements
-  const navBtns = document.querySelectorAll(".nav-btn");
-  const mobileNavBtns = document.querySelectorAll(".mobile-nav-btn");
-  const sectionModules = document.getElementById("sectionModules");
-  const sectionQuest = document.getElementById("sectionQuest");
-  const sectionQuiz = document.getElementById("sectionQuiz");
-  const sectionDictionary = document.getElementById("sectionDictionary");
-  const sectionCalculator = document.getElementById("sectionCalculator");
-  const cmdCardsGrid = document.getElementById("cmdCardsGrid");
-  const toastNotice = document.getElementById("toastNotice");
 
-  // Topology Modal Elements
+  // DOM Elements - Topology Modal
   const topologyModal = document.getElementById("topologyModal");
   const topoModalBody = document.getElementById("topoModalBody");
   const topoModalTitle = document.getElementById("topoModalTitle");
@@ -2156,41 +2681,42 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnTopoModalDone = document.getElementById("btnTopoModalDone");
   const topoModalBackdrop = document.getElementById("topoModalBackdrop");
 
+  // DOM Elements - Command Palette
+  const cmdPaletteModal = document.getElementById("cmdPaletteModal");
+  const cmdPaletteBackdrop = document.getElementById("cmdPaletteBackdrop");
+  const cmdPaletteInput = document.getElementById("cmdPaletteInput");
+  const cmdPaletteResults = document.getElementById("cmdPaletteResults");
+  const btnOpenCmdPalette = document.getElementById("btnOpenCmdPalette");
+  const btnCloseCmdPalette = document.getElementById("btnCloseCmdPalette");
+
   // ===================================================================
-  // 2. FUNGSI RENDER LIST MODUL DI SIDEBAR
+  // HELPER: DOWNLOAD FILE GENERATOR
+  // ===================================================================
+  function downloadTextFile(filename, text) {
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    showToast(`File ${filename} berhasil diunduh!`);
+  }
+
+  // ===================================================================
+  // A. RENDER DAFTAR MODUL DI SIDEBAR
   // ===================================================================
   function renderModulesSidebar(filteredList) {
     if (!modulesListContainer) return;
     modulesListContainer.innerHTML = "";
 
     if (filteredList.length === 0) {
-      const isMissingData = typeof modulesData === "undefined";
       modulesListContainer.innerHTML = `
         <div style="text-align: center; padding: 2rem 1rem; color: var(--text-dim);">
-          <i data-lucide="${isMissingData ? 'alert-triangle' : 'folder-search'}" style="width: 36px; height: 36px; margin: 0 auto 0.5rem; color: ${isMissingData ? 'var(--cisco-red)' : 'inherit'};"></i>
-          <p style="font-size: 0.85rem; font-weight: 600;">${isMissingData ? 'Data modul (data/modules.js) belum termuat.<br/><span style="font-weight:400; font-size:0.8rem;">Pastikan folder <code>data/</code> ikut terupload ke GitHub.</span>' : 'Tidak ada modul yang sesuai pencarian.'}</p>
+          <i data-lucide="folder-search" style="width: 36px; height: 36px; margin: 0 auto 0.5rem;"></i>
+          <p style="font-size: 0.85rem; font-weight: 600;">Tidak ada modul yang sesuai pencarian.</p>
         </div>
       `;
-      if (moduleWorkspace && isMissingData) {
-        moduleWorkspace.innerHTML = `
-          <div style="text-align: center; padding: 3rem 1.5rem;">
-            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
-            <h2 style="color: var(--cisco-navy); margin-bottom: 0.5rem;">File Data Belum Terupload di GitHub</h2>
-            <p style="color: var(--text-muted); max-width: 520px; margin: 0 auto 1.5rem; line-height: 1.6;">
-              Browser tidak dapat menemukan file di folder <code>data/</code> (seperti <code>modules.js</code>, <code>commands.js</code>, <code>quiz.js</code>, <code>quests.js</code>).
-            </p>
-            <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; max-width: 520px; margin: 0 auto; text-align: left; font-size: 0.88rem;">
-              <strong style="color: var(--cisco-navy);">Cara Mengatasinya di GitHub:</strong>
-              <ol style="margin-left: 1.25rem; margin-top: 0.5rem; line-height: 1.7; color: var(--text-main);">
-                <li>Buka halaman repository project Anda di <strong>GitHub</strong>.</li>
-                <li>Periksa apakah folder <strong>data</strong> sudah ada di sana.</li>
-                <li>Jika belum ada, klik <strong>Add file</strong> &rarr; <strong>Upload files</strong>, lalu seret folder <strong>data</strong> ke GitHub.</li>
-                <li>Klik <strong>Commit changes</strong> dan tunggu GitHub Pages selesai memperbarui (1-2 menit).</li>
-              </ol>
-            </div>
-          </div>
-        `;
-      }
       if (window.lucide) window.lucide.createIcons();
       return;
     }
@@ -2223,7 +2749,6 @@ document.addEventListener("DOMContentLoaded", () => {
       modulesListContainer.appendChild(item);
     });
 
-    // Populate Mobile Dropdown Select
     const mobileSelect = document.getElementById("mobileModuleSelect");
     if (mobileSelect) {
       mobileSelect.innerHTML = "";
@@ -2259,7 +2784,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Listener for Mobile Dropdown Selector
   const mobileSelect = document.getElementById("mobileModuleSelect");
   if (mobileSelect) {
     mobileSelect.addEventListener("change", (e) => {
@@ -2276,12 +2800,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===================================================================
-  // 3. FUNGSI RENDER DETAIL WORKSPACE MODUL
+  // B. RENDER DETAIL WORKSPACE MODUL (DENGAN PACKET FLOW & DOWNLOAD)
   // ===================================================================
   function renderWorkspace(mod) {
     if (!mod || !moduleWorkspace) return;
 
-    // Generate IP Table Rows
+    // IP Table Rows
     const ipTableRows = mod.ipTable.map(row => `
       <tr>
         <td><strong>${row.device}</strong></td>
@@ -2292,12 +2816,12 @@ document.addEventListener("DOMContentLoaded", () => {
       </tr>
     `).join("");
 
-    // Generate Device Chips
+    // Devices Chips
     const devicesChips = mod.devices.map(d => `
       <span class="device-chip"><i data-lucide="cpu" style="width: 14px; height: 14px;"></i> ${d}</span>
     `).join("");
 
-    // Generate Theory Points
+    // Theory Points
     const theoryPointsHtml = mod.theory.points.map(pt => `
       <div class="theory-point-item">
         <div class="theory-term">${pt.term}</div>
@@ -2305,7 +2829,7 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `).join("");
 
-    // Generate Verification Items
+    // Verification Items
     const verifyItemsHtml = mod.verification.map(v => `
       <div class="verify-item-box">
         <div class="verify-cmd-title"><i data-lucide="terminal" style="width: 16px; height: 16px;"></i> ${v.cmd}</div>
@@ -2314,12 +2838,39 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `).join("");
 
-    // Generate Device Tabs for CLI Steps
+    // Device Tabs for CLI Steps
     const deviceTabsHtml = mod.cliSteps.map((step, idx) => `
       <button type="button" class="device-tab-btn ${idx === activeTabDeviceIndex ? "active" : ""}" data-index="${idx}">
         <i data-lucide="server" style="width: 14px; height: 14px;"></i> ${step.device}
       </button>
     `).join("");
+
+    // Packet Flow Stepper HTML
+    let packetFlowHtml = "";
+    if (mod.packetFlow && Array.isArray(mod.packetFlow.steps)) {
+      const stepsHtml = mod.packetFlow.steps.map(s => `
+        <div class="packet-step-item">
+          <div class="packet-step-num">Step ${s.num} • ${s.badge}</div>
+          <div class="packet-step-title">${s.title}</div>
+          <div class="packet-step-desc">${s.desc}</div>
+        </div>
+      `).join("");
+
+      packetFlowHtml = `
+        <div class="packet-flow-card">
+          <div class="packet-flow-header">
+            <div class="packet-flow-title">
+              <i data-lucide="git-branch" style="color: var(--cisco-blue);"></i>
+              <span>${mod.packetFlow.title}</span>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 700;">Simulasi Logika Data</span>
+          </div>
+          <div class="packet-flow-steps">
+            ${stepsHtml}
+          </div>
+        </div>
+      `;
+    }
 
     // Render HTML Framework into Workspace
     moduleWorkspace.innerHTML = `
@@ -2339,9 +2890,18 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="devices-label">Perangkat Dibutuhkan:</span>
           ${devicesChips}
         </div>
+
+        <div class="workspace-actions-row">
+          <button type="button" class="btn-lab-download" id="btnDownloadCliScript">
+            <i data-lucide="file-code"></i> Download Script CLI (.txt)
+          </button>
+          <button type="button" class="btn-lab-download" id="btnDownloadStarterGuide">
+            <i data-lucide="file-text"></i> Download Panduan Setup (.txt)
+          </button>
+        </div>
       </div>
 
-      <!-- Topologi & Tabel IP -->
+      <!-- Topologi, Packet Flow & Tabel IP -->
       <div class="content-card-box">
         <div class="card-box-header">
           <i data-lucide="network"></i> Topologi Jaringan & Alokasi IP Address
@@ -2361,12 +2921,14 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
 
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;">
           <i data-lucide="info" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> 
-          <strong>Keterangan Lab:</strong> ${mod.topology.summary}
+          <strong>Keterangan Topologi:</strong> ${mod.topology.summary}
         </p>
 
-        <div class="custom-table-wrap">
+        ${packetFlowHtml}
+
+        <div class="custom-table-wrap" style="margin-top: 1.25rem;">
           <table class="ip-table">
             <thead>
               <tr>
@@ -2425,7 +2987,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // Render active device CLI step
     renderActiveCliStep(mod);
 
     // Event listeners for Device Tabs
@@ -2439,44 +3000,49 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Event listener for Topology Zoom Modal
+    // Download Script Handlers
+    const btnDlCli = document.getElementById("btnDownloadCliScript");
+    if (btnDlCli) {
+      btnDlCli.addEventListener("click", () => {
+        let scriptContent = `! ====================================================\n! CISCOLAB TKJ - SCRIPT KONFIGURASI CLI\n! ${mod.title}\n! ====================================================\n\n`;
+        mod.cliSteps.forEach(s => {
+          scriptContent += `! --- Perangkat: ${s.device} (${s.description}) ---\n`;
+          s.commands.forEach(c => {
+            scriptContent += `${c.cmd.padEnd(35)} ! ${c.note}\n`;
+          });
+          scriptContent += `\n`;
+        });
+        downloadTextFile(`${mod.id}_script_cli.txt`, scriptContent);
+      });
+    }
+
+    const btnDlGuide = document.getElementById("btnDownloadStarterGuide");
+    if (btnDlGuide) {
+      btnDlGuide.addEventListener("click", () => {
+        let guideContent = `====================================================\nCISCOLAB TKJ - PANDUAN SETUP PRAKTIKUM PACKET TRACER\n${mod.title}\n====================================================\n\n`;
+        guideContent += `Topologi:\n${mod.topology.summary}\n\n`;
+        guideContent += `Tabel Alokasi IP Address:\n`;
+        mod.ipTable.forEach(row => {
+          guideContent += `- [${row.device}] ${row.iface} -> IP: ${row.ip}, Mask: ${row.netmask}, GW: ${row.gateway}\n`;
+        });
+        guideContent += `\nLangkah Pengerjaan di Cisco Packet Tracer:\n`;
+        guideContent += `1. Ambil perangkat sesuai daftar: ${mod.devices.join(", ")}\n`;
+        guideContent += `2. Hubungkan kabel sesuai topologi\n`;
+        guideContent += `3. Masuk ke CLI masing-masing perangkat dan jalankan perintah konfigurasi\n`;
+        guideContent += `4. Lakukan verifikasi dan pengujian ping\n`;
+        downloadTextFile(`${mod.id}_panduan_lab.txt`, guideContent);
+      });
+    }
+
+    // Topology Zoom Modal
     const btnZoom = document.getElementById("btnOpenTopoZoom");
     const topoMainView = document.getElementById("topoMainView");
-    if (btnZoom) {
-      btnZoom.addEventListener("click", () => openTopologyModal(mod));
-    }
-    if (topoMainView) {
-      topoMainView.addEventListener("click", () => openTopologyModal(mod));
-    }
+    if (btnZoom) btnZoom.addEventListener("click", () => openTopologyModal(mod));
+    if (topoMainView) topoMainView.addEventListener("click", () => openTopologyModal(mod));
 
     if (window.lucide) window.lucide.createIcons();
   }
 
-  // ===================================================================
-  // 4. TOPOLOGY FULLSCREEN ZOOM MODAL
-  // ===================================================================
-  function openTopologyModal(mod) {
-    if (!topologyModal || !mod) return;
-    if (topoModalTitle) topoModalTitle.textContent = `Diagram Topologi: ${mod.title}`;
-    if (topoModalBody) topoModalBody.innerHTML = mod.topology.svg || `<pre class="topology-ascii-viewer">${mod.topology.ascii}</pre>`;
-    topologyModal.style.display = "flex";
-    document.body.style.overflow = "hidden";
-    if (window.lucide) window.lucide.createIcons();
-  }
-
-  function closeTopologyModal() {
-    if (!topologyModal) return;
-    topologyModal.style.display = "none";
-    document.body.style.overflow = "";
-  }
-
-  if (btnTopoModalClose) btnTopoModalClose.addEventListener("click", closeTopologyModal);
-  if (btnTopoModalDone) btnTopoModalDone.addEventListener("click", closeTopologyModal);
-  if (topoModalBackdrop) topoModalBackdrop.addEventListener("click", closeTopologyModal);
-
-  // ===================================================================
-  // 5. RENDER CLI STEP TERMINAL PER PERANGKAT
-  // ===================================================================
   function renderActiveCliStep(mod) {
     const cliContainer = document.getElementById("cliStepContainer");
     if (!cliContainer) return;
@@ -2485,7 +3051,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!currentStep) return;
 
     const allCmdsRaw = currentStep.commands.map(c => c.cmd).join("\n");
-
     const linesHtml = currentStep.commands.map((c) => `
       <div class="cli-line-row">
         <span class="cli-code-text">${c.cmd}</span>
@@ -2525,8 +3090,842 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.lucide) window.lucide.createIcons();
   }
 
+  function openTopologyModal(mod) {
+    if (!topologyModal || !mod) return;
+    if (topoModalTitle) topoModalTitle.textContent = `Diagram Topologi: ${mod.title}`;
+    if (topoModalBody) topoModalBody.innerHTML = mod.topology.svg || `<pre class="topology-ascii-viewer">${mod.topology.ascii}</pre>`;
+    topologyModal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function closeTopologyModal() {
+    if (!topologyModal) return;
+    topologyModal.style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  if (btnTopoModalClose) btnTopoModalClose.addEventListener("click", closeTopologyModal);
+  if (btnTopoModalDone) btnTopoModalDone.addEventListener("click", closeTopologyModal);
+  if (topoModalBackdrop) topoModalBackdrop.addEventListener("click", closeTopologyModal);
+
   // ===================================================================
-  // 6. CISCO ADAPTIVE & ENDLESS QUIZ ENGINE
+  // C. TROUBLESHOOT LAB SIMULATOR ENGINE (KASUS NYATA RTO & ERROR)
+  // ===================================================================
+  let tbSolvedCases = JSON.parse(localStorage.getItem("ciscolab_tb_solved") || "[]");
+  let tbXpScore = parseInt(localStorage.getItem("ciscolab_tb_xp") || "0", 10);
+  let currentTbCategory = "all";
+
+  const tbSolvedCount = document.getElementById("tbSolvedCount");
+  const tbXpVal = document.getElementById("tbXpVal");
+  const tbAccuracyVal = document.getElementById("tbAccuracyVal");
+  const tbRankTitle = document.getElementById("tbRankTitle");
+  const tbCasesGrid = document.getElementById("tbCasesGrid");
+  const tbFilterChips = document.querySelectorAll("#tbFilterChips .q-chip");
+
+  function getTroubleshootRank(xp) {
+    if (xp >= 300) return "👑 Master Diagnostician";
+    if (xp >= 200) return "🏆 Senior Troubleshooter";
+    if (xp >= 100) return "🛠️ Network Analyst";
+    return "🌱 Junior Helpdesk";
+  }
+
+  function updateTroubleshootHUD() {
+    const allCases = getTroubleshootCases();
+    if (tbSolvedCount) tbSolvedCount.textContent = `${tbSolvedCases.length} / ${allCases.length}`;
+    if (tbXpVal) tbXpVal.textContent = `${tbXpScore} XP`;
+    if (tbRankTitle) tbRankTitle.textContent = getTroubleshootRank(tbXpScore);
+  }
+
+  function renderTroubleshootCards() {
+    if (!tbCasesGrid) return;
+    tbCasesGrid.innerHTML = "";
+
+    const allCases = getTroubleshootCases();
+    const filtered = allCases.filter(c => currentTbCategory === "all" || c.category === currentTbCategory);
+
+    filtered.forEach((item) => {
+      const isSolved = tbSolvedCases.includes(item.id);
+      const letters = ["A", "B", "C", "D"];
+
+      const optionsHtml = item.options.map((opt, idx) => `
+        <button type="button" class="tb-opt-btn" data-case="${item.id}" data-opt="${idx}" ${isSolved ? "disabled" : ""}>
+          <span class="tb-opt-letter">${letters[idx]}</span>
+          <span>${opt}</span>
+        </button>
+      `).join("");
+
+      const card = document.createElement("div");
+      card.className = `tb-card ${isSolved ? "solved" : ""}`;
+      card.id = `tb-card-${item.id}`;
+
+      card.innerHTML = `
+        <div class="tb-card-header">
+          <div>
+            <div style="display: flex; gap: 0.45rem; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap;">
+              <span class="badge-category">${item.categoryLabel}</span>
+              <span class="q-badge-diff ${item.difficulty === 'Mudah' ? 'q-diff-mudah' : item.difficulty === 'Menengah' ? 'q-diff-sedang' : 'q-diff-sulit'}">Tingkat: ${item.difficulty}</span>
+              ${isSolved ? `<span class="badge-level-basic" style="background:#ecfdf5; color:#059669; font-weight:800; font-size:0.75rem; padding:0.15rem 0.5rem; border-radius:99px;"><i data-lucide="check-circle" style="width:12px; height:12px; vertical-align:middle;"></i> Kasus Terpecahkan (+50 XP)</span>` : ""}
+            </div>
+            <h3 class="tb-title">${item.title}</h3>
+          </div>
+        </div>
+
+        <div class="tb-symptom-box">
+          <strong>⚠️ Gejala Masalah (Symptom):</strong><br/>
+          ${item.symptom}
+        </div>
+
+        <div class="tb-output-box">
+          <div class="tb-output-label">
+            <i data-lucide="terminal" style="width: 14px; height: 14px;"></i>
+            <span>${item.outputTitle} <code>${item.outputCmd}</code></span>
+          </div>
+          <pre class="tb-output-pre">${item.consoleOutput}</pre>
+        </div>
+
+        <div class="tb-question-title">🔍 Pertanyaan Analis: ${item.question}</div>
+
+        <div class="tb-options-list" id="tb-opts-${item.id}">
+          ${optionsHtml}
+        </div>
+
+        <div id="tb-feedback-${item.id}">
+          ${isSolved ? `
+            <div class="tb-feedback-card passed">
+              <div style="font-weight: 800; color: #166534; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                <i data-lucide="check-circle-2" style="width: 18px; height: 18px;"></i>
+                <span>Diagnosa Tepat & Kasus Selesai!</span>
+              </div>
+              <p style="font-size: 0.85rem; color: #15803d; line-height: 1.45; margin-bottom: 0.6rem;">${item.explanation}</p>
+              <div class="tb-solution-box">
+                <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 800; text-transform: uppercase;">Perintah CLI Perbaikan Solusi:</span>
+                <code class="tb-fix-code">${item.fixCommands}</code>
+              </div>
+            </div>
+          ` : ""}
+        </div>
+      `;
+
+      tbCasesGrid.appendChild(card);
+    });
+
+    // Attach button click handlers
+    const allOptBtns = tbCasesGrid.querySelectorAll(".tb-opt-btn");
+    allOptBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const caseId = btn.getAttribute("data-case");
+        const optIdx = parseInt(btn.getAttribute("data-opt"), 10);
+        handleTroubleshootAnswer(caseId, optIdx);
+      });
+    });
+
+    updateTroubleshootHUD();
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function handleTroubleshootAnswer(caseId, chosenIdx) {
+    const allCases = getTroubleshootCases();
+    const cItem = allCases.find(c => c.id === caseId);
+    if (!cItem || tbSolvedCases.includes(caseId)) return;
+
+    const optContainer = document.getElementById(`tb-opts-${caseId}`);
+    const feedbackContainer = document.getElementById(`tb-feedback-${caseId}`);
+    const cardEl = document.getElementById(`tb-card-${caseId}`);
+    if (!optContainer || !feedbackContainer) return;
+
+    const btns = optContainer.querySelectorAll(".tb-opt-btn");
+    const isCorrect = (chosenIdx === cItem.correctIndex);
+
+    if (isCorrect) {
+      tbSolvedCases.push(caseId);
+      tbXpScore += 50;
+      localStorage.setItem("ciscolab_tb_solved", JSON.stringify(tbSolvedCases));
+      localStorage.setItem("ciscolab_tb_xp", tbXpScore);
+
+      btns.forEach(b => b.disabled = true);
+      btns[chosenIdx].classList.add("correct");
+      if (cardEl) cardEl.classList.add("solved");
+
+      feedbackContainer.innerHTML = `
+        <div class="tb-feedback-card passed">
+          <div style="font-weight: 800; color: #166534; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i data-lucide="check-circle-2" style="width: 18px; height: 18px;"></i>
+            <span>🎉 Diagnosa Sempurna! (+50 XP)</span>
+          </div>
+          <p style="font-size: 0.85rem; color: #15803d; line-height: 1.45; margin-bottom: 0.6rem;">${cItem.explanation}</p>
+          <div class="tb-solution-box">
+            <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 800; text-transform: uppercase;">Perintah CLI Perbaikan Solusi:</span>
+            <code class="tb-fix-code">${cItem.fixCommands}</code>
+          </div>
+        </div>
+      `;
+      showToast(`🎉 Kasus ${cItem.title.split(":")[0]} Berhasil Dipecahkan! (+50 XP)`);
+    } else {
+      btns[chosenIdx].classList.add("wrong");
+      feedbackContainer.innerHTML = `
+        <div class="tb-feedback-card failed">
+          <div style="font-weight: 800; color: #991b1b; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i data-lucide="x-circle" style="width: 18px; height: 18px;"></i>
+            <span>Diagnosa Belum Tepat! Periksa kembali output terminal di atas.</span>
+          </div>
+          <p style="font-size: 0.84rem; color: #b91c1c;">Cermati kembali baris output perintah yang bermasalah, lalu coba pilih kembali opsi yang sesuai.</p>
+        </div>
+      `;
+    }
+
+    updateTroubleshootHUD();
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function initTroubleshootEngine() {
+    updateTroubleshootHUD();
+    tbFilterChips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        tbFilterChips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        currentTbCategory = chip.getAttribute("data-tbcat");
+        renderTroubleshootCards();
+      });
+    });
+    renderTroubleshootCards();
+  }
+
+  // ===================================================================
+  // D. WEB CLI SIMULATOR SANDBOX (INTERACTIVE CISCO TERMINAL)
+  // ===================================================================
+  const sandboxTermBody = document.getElementById("sandboxTermBody");
+  const sandboxInput = document.getElementById("sandboxInput");
+  const sandboxPrompt = document.getElementById("sandboxPrompt");
+  const btnSandboxSend = document.getElementById("btnSandboxSend");
+  const sandboxTermTitle = document.getElementById("sandboxTermTitle");
+  const sandboxDevBtns = document.querySelectorAll(".sandbox-dev-btn");
+  const btnResetTerminal = document.getElementById("btnResetTerminal");
+  const btnClearScreen = document.getElementById("btnClearScreen");
+  const sandboxMissionChips = document.querySelectorAll(".mission-chip");
+  const sandboxMissionDesc = document.getElementById("sandboxMissionDesc");
+  const quickCmdKeys = document.querySelectorAll(".quick-cmd-key");
+
+  let termDevice = "router";
+  let termHostname = "Router";
+  let termMode = "user";
+  let termSubInterface = "";
+  let termActiveMission = 1;
+  let termCompletedMissions = JSON.parse(localStorage.getItem("ciscolab_term_missions") || "[]");
+  let commandHistory = [];
+  let historyIndex = -1;
+
+  const missionsData = {
+    1: { title: "1. Ganti Hostname", desc: "Masuk ke Global Configuration mode, lalu ubah hostname menjadi <code>R1-TKJ</code> menggunakan perintah <code>hostname R1-TKJ</code>." },
+    2: { title: "2. Pasang Enable Secret", desc: "Pasang password Privileged Mode terenkripsi MD5 dengan perintah <code>enable secret cisco123</code> di mode Global Config." },
+    3: { title: "3. Aktifkan IP G0/0", desc: "Masuk ke interface G0/0 (<code>int g0/0</code>), beri IP <code>192.168.1.1 255.255.255.0</code> dan aktifkan port dengan <code>no shutdown</code>." },
+    4: { title: "4. Buat VLAN 10", desc: "Pilih perangkat Switch0, lalu buat VLAN 10 dengan perintah <code>vlan 10</code> dan beri nama <code>name LAB-TKJ</code>." },
+    5: { title: "5. Simpan ke NVRAM", desc: "Masuk ke Privileged Mode (#), lalu simpan seluruh konfigurasi aktif ke memori permanen dengan <code>write memory</code>." }
+  };
+
+  function updateTerminalPrompt() {
+    let p = `${termHostname}>`;
+    if (termMode === "priv") p = `${termHostname}#`;
+    else if (termMode === "config") p = `${termHostname}(config)#`;
+    else if (termMode === "config-if") p = `${termHostname}(config-if)#`;
+    else if (termMode === "config-vlan") p = `${termHostname}(config-vlan)#`;
+    else if (termMode === "config-router") p = `${termHostname}(config-router)#`;
+
+    if (sandboxPrompt) sandboxPrompt.textContent = p;
+  }
+
+  function appendTerminalLog(text, isCommand = false, isError = false) {
+    if (!sandboxTermBody) return;
+    const line = document.createElement("div");
+    line.className = "sandbox-log-line";
+    if (isCommand) {
+      line.style.color = "#38bdf8";
+      line.style.fontWeight = "700";
+    } else if (isError) {
+      line.style.color = "#f87171";
+    } else {
+      line.style.color = "#e2e8f0";
+    }
+    line.innerHTML = text;
+    sandboxTermBody.appendChild(line);
+    sandboxTermBody.scrollTop = sandboxTermBody.scrollHeight;
+  }
+
+  function updateMissionsHUD() {
+    sandboxMissionChips.forEach(chip => {
+      const mid = parseInt(chip.getAttribute("data-mid"), 10);
+      if (termCompletedMissions.includes(mid)) {
+        chip.classList.add("completed");
+        chip.innerHTML = `✅ ${missionsData[mid].title}`;
+      } else {
+        chip.classList.remove("completed");
+        chip.innerHTML = `🎯 ${missionsData[mid].title}`;
+      }
+      if (mid === termActiveMission) chip.classList.add("active");
+      else chip.classList.remove("active");
+    });
+
+    if (sandboxMissionDesc && missionsData[termActiveMission]) {
+      sandboxMissionDesc.innerHTML = `<strong>Misi ${termActiveMission}:</strong> ${missionsData[termActiveMission].desc}`;
+    }
+  }
+
+  function checkMissionCompletion(cmdRaw) {
+    const cmd = cmdRaw.toLowerCase().trim();
+    if (termActiveMission === 1 && cmd.startsWith("hostname") && cmd.includes("r1-tkj")) {
+      completeMission(1);
+    } else if (termActiveMission === 2 && cmd.includes("enable secret") && cmd.includes("cisco123")) {
+      completeMission(2);
+    } else if (termActiveMission === 3 && (cmd === "no shutdown" || cmd === "no shut") && termMode === "config-if") {
+      completeMission(3);
+    } else if (termActiveMission === 4 && (cmd.includes("name lab-tkj") || (cmd === "vlan 10" && termDevice === "switch"))) {
+      completeMission(4);
+    } else if (termActiveMission === 5 && (cmd === "write memory" || cmd === "write" || cmd === "wr" || cmd === "copy run start")) {
+      completeMission(5);
+    }
+  }
+
+  function completeMission(mId) {
+    if (!termCompletedMissions.includes(mId)) {
+      termCompletedMissions.push(mId);
+      localStorage.setItem("ciscolab_term_missions", JSON.stringify(termCompletedMissions));
+      showToast(`🎉 Misi ${mId} Berhasil Diselesaikan! (+25 XP)`);
+      updateMissionsHUD();
+    }
+  }
+
+  function executeTerminalCommand(rawInput) {
+    const input = rawInput.trim();
+    if (!input) return;
+
+    commandHistory.push(input);
+    historyIndex = commandHistory.length;
+
+    appendTerminalLog(`${sandboxPrompt ? sandboxPrompt.textContent : ">"} ${input}`, true);
+
+    const parts = input.split(/\s+/);
+    const cmd = parts[0].toLowerCase();
+    const arg1 = (parts[1] || "").toLowerCase();
+    const arg2 = (parts[2] || "").toLowerCase();
+
+    checkMissionCompletion(input);
+
+    if (cmd === "?" || cmd === "help") {
+      if (termMode === "user") {
+        appendTerminalLog(`Exec commands:\n  enable              Turn on privileged commands\n  ping                Send echo messages\n  show                Show running system information\n  exit                Exit from the EXEC`);
+      } else if (termMode === "priv") {
+        appendTerminalLog(`Privileged commands:\n  configure terminal  Enter configuration mode\n  show                Show running system information (ip int br, ip route, run, vlan)\n  write memory        Save configuration to NVRAM\n  disable             Turn off privileged commands\n  ping                Send echo messages\n  exit                Exit to User Mode`);
+      } else if (termMode === "config") {
+        appendTerminalLog(`Global config commands:\n  hostname <name>     Set system network name\n  interface <name>    Select an interface to configure (g0/0, g0/1, fa0/1)\n  ip route <net> <mask> <gw>  Configure static route\n  router ospf <id>    Enable OSPF routing process\n  vlan <id>           Configure VLAN parameters\n  enable secret <pwd> Set encrypted enable password\n  exit / end          Exit to Privileged Mode`);
+      } else if (termMode === "config-if") {
+        appendTerminalLog(`Interface config commands:\n  ip address <ip> <mask>  Set IP address on interface\n  no shutdown             Enable (up) the interface\n  shutdown                Disable the interface\n  switchport mode <access|trunk>  Set trunk/access mode\n  switchport access vlan <id>     Assign VLAN\n  exit / end              Exit interface submode`);
+      } else {
+        appendTerminalLog(`Available commands: exit, end, show, ?`);
+      }
+      return;
+    }
+
+    if (cmd === "clear" || cmd === "cls") {
+      if (sandboxTermBody) sandboxTermBody.innerHTML = "";
+      return;
+    }
+
+    if (cmd === "exit" || cmd === "end") {
+      if (termMode === "config-if" || termMode === "config-vlan" || termMode === "config-router") {
+        termMode = "config";
+      } else if (termMode === "config") {
+        termMode = "priv";
+      } else if (termMode === "priv") {
+        termMode = "user";
+      }
+      updateTerminalPrompt();
+      return;
+    }
+
+    if (cmd === "enable" || cmd === "en") {
+      termMode = "priv";
+      updateTerminalPrompt();
+      return;
+    }
+    if (cmd === "disable") {
+      termMode = "user";
+      updateTerminalPrompt();
+      return;
+    }
+
+    if ((cmd === "configure" && arg1 === "terminal") || cmd === "conf" || cmd === "conft") {
+      if (termMode === "user") {
+        appendTerminalLog("% Command not allowed in User Mode. Type 'enable' first.", false, true);
+      } else {
+        termMode = "config";
+        appendTerminalLog("Enter configuration commands, one per line. End with CNTL/Z.");
+        updateTerminalPrompt();
+      }
+      return;
+    }
+
+    if (cmd === "hostname") {
+      if (termMode !== "config") {
+        appendTerminalLog("% Incomplete/Invalid mode for 'hostname'. Must be in Global Config.", false, true);
+      } else if (parts[1]) {
+        termHostname = parts[1];
+        updateTerminalPrompt();
+      }
+      return;
+    }
+
+    if (cmd === "interface" || cmd === "int") {
+      if (termMode !== "config") {
+        appendTerminalLog("% Command must be executed in Global Config mode.", false, true);
+      } else {
+        termMode = "config-if";
+        termSubInterface = parts.slice(1).join(" ");
+        updateTerminalPrompt();
+      }
+      return;
+    }
+
+    if (cmd === "vlan") {
+      if (termMode !== "config") {
+        appendTerminalLog("% Command must be executed in Global Config mode.", false, true);
+      } else {
+        termMode = "config-vlan";
+        appendTerminalLog(`% VLAN ${parts[1] || "10"} created.`);
+        updateTerminalPrompt();
+      }
+      return;
+    }
+
+    if (cmd === "router" && arg1 === "ospf") {
+      if (termMode !== "config") {
+        appendTerminalLog("% Command must be executed in Global Config mode.", false, true);
+      } else {
+        termMode = "config-router";
+        updateTerminalPrompt();
+      }
+      return;
+    }
+
+    if ((cmd === "no" && (arg1 === "shutdown" || arg1 === "shut")) || cmd === "noshut") {
+      appendTerminalLog(`%LINK-5-CHANGED: Interface ${termSubInterface || "GigabitEthernet0/0"}, changed state to up\n%LINEPROTO-5-UPDOWN: Line protocol on Interface ${termSubInterface || "GigabitEthernet0/0"}, changed state to up`);
+      return;
+    }
+
+    if (cmd === "ip" && arg1 === "address") {
+      if (termMode !== "config-if") {
+        appendTerminalLog("% Must be in interface configuration mode.", false, true);
+      } else {
+        appendTerminalLog(`% IP address ${parts[2] || "192.168.1.1"} ${parts[3] || "255.255.255.0"} configured on ${termSubInterface || "interface"}.`);
+      }
+      return;
+    }
+
+    if (cmd === "ip" && arg1 === "route") {
+      appendTerminalLog(`% Static route added: ${parts.slice(2).join(" ")}.`);
+      return;
+    }
+
+    if (cmd === "write" || cmd === "wr" || (cmd === "copy" && arg1 === "running-config" && arg2 === "startup-config") || (cmd === "copy" && arg1 === "run" && arg2 === "start")) {
+      appendTerminalLog("Building configuration...\n[OK] Configuration successfully committed to NVRAM.");
+      return;
+    }
+
+    if (cmd === "ping") {
+      const target = parts[1] || "8.8.8.8";
+      appendTerminalLog(`Type escape sequence to abort.\nSending 5, 100-byte ICMP Echos to ${target}, timeout is 2 seconds:\n!!!!!\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 1/2/4 ms`);
+      return;
+    }
+
+    if (cmd === "show" || cmd === "do" && arg1 === "show") {
+      const showArg = (cmd === "do" ? arg2 : arg1);
+
+      if (showArg === "ip" && (parts[2] === "int" || parts[2] === "interface" || parts[3] === "brief" || parts[3] === "br")) {
+        appendTerminalLog(`Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     192.168.1.1     YES manual up                    up      
+GigabitEthernet0/1     10.10.10.1      YES manual up                    up      
+GigabitEthernet0/2     unassigned      YES unset  administratively down down    
+Vlan1                  unassigned      YES unset  administratively down down`);
+        return;
+      }
+
+      if (showArg === "ip" && (parts[2] === "route" || parts[3] === "route")) {
+        appendTerminalLog(`Codes: C - connected, S - static, R - RIP, O - OSPF, IA - OSPF inter area
+Gateway of last resort is 10.10.10.2 to network 0.0.0.0
+
+C    192.168.1.0/24 is directly connected, GigabitEthernet0/0
+C    10.10.10.0/30 is directly connected, GigabitEthernet0/1
+S*   0.0.0.0/0 [1/0] via 10.10.10.2`);
+        return;
+      }
+
+      if (showArg === "vlan" || showArg === "vlans") {
+        appendTerminalLog(`VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+10   LAB-TKJ                          active    Fa0/6, Fa0/7, Fa0/8, Fa0/9
+20   RUANG-GURU                       active    Fa0/10, Fa0/11, Fa0/12`);
+        return;
+      }
+
+      if (showArg === "run" || showArg === "running-config") {
+        appendTerminalLog(`Building configuration...
+Current configuration : 1084 bytes
+!
+version 15.1
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ${termHostname}
+!
+enable secret 5 $1$mERr$hp7tGg8Z1Xb4Nq.2QeZ
+!
+interface GigabitEthernet0/0
+ ip address 192.168.1.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+end`);
+        return;
+      }
+
+      appendTerminalLog(`% Ambiguous show command. Try 'show ip int br', 'show ip route', 'show vlan brief', or 'show run'.`);
+      return;
+    }
+
+    appendTerminalLog(`% Command accepted: ${input}`);
+  }
+
+  function initSandboxEngine() {
+    updateTerminalPrompt();
+    updateMissionsHUD();
+
+    if (sandboxInput) {
+      sandboxInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const val = sandboxInput.value;
+          sandboxInput.value = "";
+          executeTerminalCommand(val);
+        } else if (e.key === "Tab") {
+          e.preventDefault();
+          const val = sandboxInput.value.toLowerCase().trim();
+          if (val === "en" || val === "ena") sandboxInput.value = "enable";
+          else if (val === "conf" || val === "conft") sandboxInput.value = "configure terminal";
+          else if (val === "sh" || val === "sho") sandboxInput.value = "show ip interface brief";
+          else if (val === "int") sandboxInput.value = "interface gigabitEthernet 0/0";
+          else if (val === "wr") sandboxInput.value = "write memory";
+          else if (val === "no shut") sandboxInput.value = "no shutdown";
+        } else if (e.key === "ArrowUp") {
+          if (historyIndex > 0) {
+            historyIndex--;
+            sandboxInput.value = commandHistory[historyIndex] || "";
+          }
+        } else if (e.key === "ArrowDown") {
+          if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            sandboxInput.value = commandHistory[historyIndex] || "";
+          } else {
+            historyIndex = commandHistory.length;
+            sandboxInput.value = "";
+          }
+        }
+      });
+    }
+
+    if (btnSandboxSend && sandboxInput) {
+      btnSandboxSend.addEventListener("click", () => {
+        const val = sandboxInput.value;
+        sandboxInput.value = "";
+        executeTerminalCommand(val);
+        sandboxInput.focus();
+      });
+    }
+
+    sandboxDevBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        sandboxDevBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        termDevice = btn.getAttribute("data-dev");
+        termHostname = termDevice === "switch" ? "Switch0" : termDevice === "isp" ? "ISP-Gateway" : "Router0";
+        termMode = "user";
+        if (sandboxTermTitle) sandboxTermTitle.textContent = `Cisco IOS CLI Simulator — ${btn.textContent.trim()}`;
+        updateTerminalPrompt();
+        appendTerminalLog(`% Switched terminal session to ${termHostname}. Mode reset to User EXEC.`);
+      });
+    });
+
+    if (btnResetTerminal) {
+      btnResetTerminal.addEventListener("click", () => {
+        termHostname = termDevice === "switch" ? "Switch0" : "Router0";
+        termMode = "user";
+        if (sandboxTermBody) sandboxTermBody.innerHTML = `<div class="sandbox-log-line banner-line">--- Terminal telah direset ke setelan awal ---</div>`;
+        updateTerminalPrompt();
+        showToast("Terminal berhasil direset.");
+      });
+    }
+
+    if (btnClearScreen) {
+      btnClearScreen.addEventListener("click", () => {
+        if (sandboxTermBody) sandboxTermBody.innerHTML = "";
+      });
+    }
+
+    sandboxMissionChips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        termActiveMission = parseInt(chip.getAttribute("data-mid"), 10);
+        updateMissionsHUD();
+      });
+    });
+
+    quickCmdKeys.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const cmd = btn.getAttribute("data-cmd");
+        if (sandboxInput) {
+          sandboxInput.value = cmd;
+          executeTerminalCommand(cmd);
+          sandboxInput.value = "";
+          sandboxInput.focus();
+        }
+      });
+    });
+  }
+
+  // ===================================================================
+  // E. CHEATSHEET TKJ VIEW RENDERER
+  // ===================================================================
+  function renderCheatsheet() {
+    const container = document.getElementById("cheatsheetContent");
+    if (!container || typeof ciscoCheatsheetData === "undefined") return;
+
+    const modesRows = ciscoCheatsheetData.modes.map(m => `
+      <tr>
+        <td><strong>${m.mode}</strong></td>
+        <td><code style="color:#0284c7; font-weight:800;">${m.prompt}</code></td>
+        <td>${m.desc}</td>
+        <td><code>${m.cmd}</code></td>
+      </tr>
+    `).join("");
+
+    const subnetsRows = ciscoCheatsheetData.subnets.map(s => `
+      <tr>
+        <td><strong>${s.cidr}</strong></td>
+        <td><code>${s.mask}</code></td>
+        <td style="color:#d97706; font-weight:700;">${s.wildcard}</td>
+        <td style="color:#059669; font-weight:800;">${s.hosts}</td>
+        <td>${s.use}</td>
+      </tr>
+    `).join("");
+
+    const showCmdsHtml = ciscoCheatsheetData.topShowCmds.map(sc => `
+      <div class="cheatsheet-item">
+        <div class="cheatsheet-cmd-name">${sc.cmd}</div>
+        <div class="cheatsheet-cmd-desc">${sc.desc}</div>
+      </div>
+    `).join("");
+
+    const formulasHtml = ciscoCheatsheetData.quickFormulas.map(qf => `
+      <div class="cheatsheet-item">
+        <div style="font-size:0.82rem; font-weight:800; color:var(--cisco-navy); margin-bottom:0.2rem;">📌 ${qf.topic}:</div>
+        <code style="display:block; background:#0f172a; color:#a7f3d0; padding:0.45rem 0.65rem; border-radius:6px; font-size:0.78rem; white-space:pre-wrap;">${qf.formula}</code>
+      </div>
+    `).join("");
+
+    container.innerHTML = `
+      <div class="cheatsheet-card" style="grid-column: 1 / -1;">
+        <div class="cheatsheet-card-title">
+          <i data-lucide="layers" style="color: var(--cisco-blue);"></i> 1. Hierarki Mode & Prompt Cisco IOS
+        </div>
+        <div class="custom-table-wrap">
+          <table class="cheatsheet-table">
+            <thead>
+              <tr>
+                <th>Nama Mode</th>
+                <th>Tampilan Prompt</th>
+                <th>Keterangan Hak Akses</th>
+                <th>Perintah Berpindah</th>
+              </tr>
+            </thead>
+            <tbody>${modesRows}</tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="cheatsheet-card">
+        <div class="cheatsheet-card-title">
+          <i data-lucide="calculator" style="color: var(--cisco-blue);"></i> 2. Tabel Sakti Subnetting & Wildcard Mask
+        </div>
+        <div class="custom-table-wrap">
+          <table class="cheatsheet-table">
+            <thead>
+              <tr>
+                <th>CIDR</th>
+                <th>Subnet Mask</th>
+                <th>Wildcard</th>
+                <th>Host</th>
+                <th>Penggunaan Lab</th>
+              </tr>
+            </thead>
+            <tbody>${subnetsRows}</tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="cheatsheet-card">
+        <div class="cheatsheet-card-title">
+          <i data-lucide="terminal" style="color: var(--cisco-blue);"></i> 3. 10 Perintah Verifikasi Lab Terpenting
+        </div>
+        <div>${showCmdsHtml}</div>
+      </div>
+
+      <div class="cheatsheet-card" style="grid-column: 1 / -1;">
+        <div class="cheatsheet-card-title">
+          <i data-lucide="check-square" style="color: var(--cisco-blue);"></i> 4. Rumus Baku Sintaks Konfigurasi Lab & UKK TKJ
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0.85rem;">
+          ${formulasHtml}
+        </div>
+      </div>
+    `;
+
+    const btnPrint = document.getElementById("btnPrintCheatsheet");
+    if (btnPrint) {
+      btnPrint.addEventListener("click", () => window.print());
+    }
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  // ===================================================================
+  // F. GLOBAL COMMAND PALETTE (CTRL + K SEARCH POPUP)
+  // ===================================================================
+  function openCommandPalette() {
+    if (!cmdPaletteModal) return;
+    cmdPaletteModal.style.display = "flex";
+    if (cmdPaletteInput) {
+      cmdPaletteInput.value = "";
+      cmdPaletteInput.focus();
+    }
+    renderCommandPaletteResults("");
+    document.body.style.overflow = "hidden";
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function closeCommandPalette() {
+    if (!cmdPaletteModal) return;
+    cmdPaletteModal.style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  function renderCommandPaletteResults(query) {
+    if (!cmdPaletteResults) return;
+    cmdPaletteResults.innerHTML = "";
+    const q = query.toLowerCase().trim();
+
+    const items = [];
+
+    getModules().forEach(m => {
+      if (!q || m.title.toLowerCase().includes(q) || m.description.toLowerCase().includes(q)) {
+        items.push({
+          type: "modul",
+          badge: "Modul Lab",
+          title: `Modul ${m.number}: ${m.title}`,
+          sub: `${m.level} • ${m.estTime}`,
+          action: () => {
+            currentModuleId = m.id;
+            switchView("modules");
+            updateActiveSidebar();
+            renderWorkspace(m);
+          }
+        });
+      }
+    });
+
+    getTroubleshootCases().forEach(tc => {
+      if (!q || tc.title.toLowerCase().includes(q) || tc.symptom.toLowerCase().includes(q)) {
+        items.push({
+          type: "trouble",
+          badge: "Troubleshoot",
+          title: tc.title,
+          sub: tc.categoryLabel,
+          action: () => {
+            switchView("troubleshoot");
+          }
+        });
+      }
+    });
+
+    getCommands().forEach(c => {
+      if (!q || c.command.toLowerCase().includes(q) || c.purpose.toLowerCase().includes(q)) {
+        items.push({
+          type: "cmd",
+          badge: `CLI (${c.mode})`,
+          title: c.command,
+          sub: c.purpose,
+          action: () => {
+            switchView("dictionary");
+          }
+        });
+      }
+    });
+
+    if (items.length === 0) {
+      cmdPaletteResults.innerHTML = `
+        <div style="text-align: center; padding: 2rem 1rem; color: var(--text-dim);">
+          <p style="font-size: 0.9rem; font-weight: 600;">Tidak ditemukan hasil untuk "${query}".</p>
+        </div>
+      `;
+      return;
+    }
+
+    items.slice(0, 15).forEach((it, idx) => {
+      const row = document.createElement("div");
+      row.className = `cmd-palette-item ${idx === 0 ? "active" : ""}`;
+      row.innerHTML = `
+        <div class="cmd-pal-left">
+          <div class="cmd-pal-icon-wrap">
+            <i data-lucide="${it.type === 'modul' ? 'book-open' : it.type === 'trouble' ? 'wrench' : 'terminal'}" style="width: 16px; height: 16px;"></i>
+          </div>
+          <div style="min-width: 0;">
+            <div class="cmd-pal-title">${it.title}</div>
+            <div class="cmd-pal-sub">${it.sub}</div>
+          </div>
+        </div>
+        <span class="cmd-pal-badge">${it.badge}</span>
+      `;
+
+      row.addEventListener("click", () => {
+        closeCommandPalette();
+        it.action();
+      });
+
+      cmdPaletteResults.appendChild(row);
+    });
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function initCommandPalette() {
+    window.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        openCommandPalette();
+      } else if (e.key === "Escape" && cmdPaletteModal && cmdPaletteModal.style.display === "flex") {
+        closeCommandPalette();
+      }
+    });
+
+    if (btnOpenCmdPalette) btnOpenCmdPalette.addEventListener("click", openCommandPalette);
+    if (btnCloseCmdPalette) btnCloseCmdPalette.addEventListener("click", closeCommandPalette);
+    if (cmdPaletteBackdrop) cmdPaletteBackdrop.addEventListener("click", closeCommandPalette);
+
+    if (cmdPaletteInput) {
+      cmdPaletteInput.addEventListener("input", (e) => {
+        renderCommandPaletteResults(e.target.value);
+      });
+    }
+  }
+
+  // ===================================================================
+  // G. CISCO ADAPTIVE QUIZ ENGINE
   // ===================================================================
   let quizScore = parseInt(localStorage.getItem("ciscolab_quiz_score") || "0", 10);
   let quizStreak = 0;
@@ -2540,14 +3939,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const quizStreakVal = document.getElementById("quizStreakVal");
   const quizAccuracyVal = document.getElementById("quizAccuracyVal");
   const quizCountVal = document.getElementById("quizCountVal");
-  const quizFilterChips = document.querySelectorAll(".q-chip");
+  const quizFilterChips = document.querySelectorAll("#quizFilterChips .q-chip");
   const quizCardBox = document.getElementById("quizCardBox");
 
   function updateQuizStatsHUD() {
     if (quizXpVal) quizXpVal.textContent = `${quizScore} XP`;
     if (quizStreakVal) quizStreakVal.textContent = `🔥 ${quizStreak}x`;
     if (quizCountVal) quizCountVal.textContent = `${quizTotalAnswered} Soal`;
-    
     if (quizAccuracyVal) {
       if (quizTotalAnswered === 0) {
         quizAccuracyVal.textContent = "100%";
@@ -2631,9 +4029,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("ciscolab_quiz_answered", quizTotalAnswered);
       localStorage.setItem("ciscolab_quiz_correct", quizCorrectCount);
 
-      if (optButtons[chosenIdx]) {
-        optButtons[chosenIdx].classList.add("correct");
-      }
+      if (optButtons[chosenIdx]) optButtons[chosenIdx].classList.add("correct");
 
       feedbackContainer.innerHTML = `
         <div class="quiz-feedback-box is-correct">
@@ -2662,15 +4058,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       quizStreak = 0;
       quizTotalAnswered++;
-
       localStorage.setItem("ciscolab_quiz_answered", quizTotalAnswered);
 
-      if (optButtons[chosenIdx]) {
-        optButtons[chosenIdx].classList.add("wrong");
-      }
-      if (optButtons[currentQuizItem.correctIndex]) {
-        optButtons[currentQuizItem.correctIndex].classList.add("correct");
-      }
+      if (optButtons[chosenIdx]) optButtons[chosenIdx].classList.add("wrong");
+      if (optButtons[currentQuizItem.correctIndex]) optButtons[currentQuizItem.correctIndex].classList.add("correct");
 
       feedbackContainer.innerHTML = `
         <div class="quiz-feedback-box is-wrong">
@@ -2703,20 +4094,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initQuizEngine() {
     updateQuizStatsHUD();
-    if (typeof ciscoQuizBank === "undefined" || !Array.isArray(ciscoQuizBank) || ciscoQuizBank.length === 0) {
-      if (quizCardBox) {
-        quizCardBox.innerHTML = `
-          <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-dim);">
-            <i data-lucide="alert-triangle" style="width: 36px; height: 36px; margin: 0 auto 0.5rem; color: var(--cisco-gold);"></i>
-            <p style="font-weight: 700; color: var(--cisco-navy);">Data Bank Soal Kuis (data/quiz.js) belum termuat.</p>
-            <p style="font-size: 0.85rem; margin-top: 0.25rem;">Pastikan file <code>data/quiz.js</code> ikut terupload ke repository GitHub Anda.</p>
-          </div>
-        `;
-        if (window.lucide) window.lucide.createIcons();
-      }
-      return;
-    }
-
     quizFilterChips.forEach(chip => {
       chip.addEventListener("click", () => {
         quizFilterChips.forEach(c => c.classList.remove("active"));
@@ -2732,13 +4109,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===================================================================
-  // 7. LAB QUEST - TUGAS PRAKTIKUM LAPTOP & VALIDASI PG/ESAI
+  // H. LAB QUEST GAME ENGINE
   // ===================================================================
   let questUnlockedLevel = parseInt(localStorage.getItem("ciscolab_quest_unlocked") || "1", 10);
   let questTotalXp = parseInt(localStorage.getItem("ciscolab_quest_xp") || "0", 10);
   let activeQuestIndex = 0;
   let isWorkingStatus = false;
-  let questEvaluationResult = null; // null or evaluation result object
+  let questEvaluationResult = null;
 
   const questPlayerRank = document.getElementById("questPlayerRank");
   const questPlayerXp = document.getElementById("questPlayerXp");
@@ -2822,7 +4199,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const lvl = ciscoQuestLevels[activeQuestIndex];
     if (!lvl) return;
 
-    // Generate Tasks Checklist HTML
     const taskItemsHtml = lvl.tasks.map((task, idx) => `
       <div class="quest-task-item">
         <span class="quest-task-num">${idx + 1}</span>
@@ -2830,7 +4206,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `).join("");
 
-    // Generate PG 1 & PG 2 HTML
     const pg1 = lvl.verification.pgQuestions[0];
     const pg1OptionsHtml = pg1.options.map((opt, idx) => `
       <label class="quest-verify-opt-label">
@@ -2847,7 +4222,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </label>
     `).join("");
 
-    // Determine verification / evaluation section
     let verificationSectionHtml = "";
 
     if (questEvaluationResult && questEvaluationResult.levelNum === lvl.level) {
@@ -2863,38 +4237,19 @@ document.addEventListener("DOMContentLoaded", () => {
           </p>
 
           <div class="quest-eval-breakdown-list">
-            <!-- PG 1 Breakdown -->
             <div class="quest-eval-item ${res.pg1Correct ? "is-correct" : "is-wrong"}">
-              <div class="quest-eval-item-title">
-                ${res.pg1Correct ? "✅ [Soal 1 PG - Benar]" : "❌ [Soal 1 PG - Belum Tepat]"} ${pg1.question}
-              </div>
-              <div class="quest-eval-item-text">
-                <strong>Jawaban yang Benar:</strong> ${pg1.options[pg1.correctIndex]}<br/>
-                💡 <em>${pg1.explanation}</em>
-              </div>
+              <div class="quest-eval-item-title">${res.pg1Correct ? "✅ [Soal 1 PG - Benar]" : "❌ [Soal 1 PG - Belum Tepat]"} ${pg1.question}</div>
+              <div class="quest-eval-item-text"><strong>Jawaban yang Benar:</strong> ${pg1.options[pg1.correctIndex]}<br/>💡 <em>${pg1.explanation}</em></div>
             </div>
 
-            <!-- PG 2 Breakdown -->
             <div class="quest-eval-item ${res.pg2Correct ? "is-correct" : "is-wrong"}">
-              <div class="quest-eval-item-title">
-                ${res.pg2Correct ? "✅ [Soal 2 PG - Benar]" : "❌ [Soal 2 PG - Belum Tepat]"} ${pg2.question}
-              </div>
-              <div class="quest-eval-item-text">
-                <strong>Jawaban yang Benar:</strong> ${pg2.options[pg2.correctIndex]}<br/>
-                💡 <em>${pg2.explanation}</em>
-              </div>
+              <div class="quest-eval-item-title">${res.pg2Correct ? "✅ [Soal 2 PG - Benar]" : "❌ [Soal 2 PG - Belum Tepat]"} ${pg2.question}</div>
+              <div class="quest-eval-item-text"><strong>Jawaban yang Benar:</strong> ${pg2.options[pg2.correctIndex]}<br/>💡 <em>${pg2.explanation}</em></div>
             </div>
 
-            <!-- Essay Breakdown -->
             <div class="quest-eval-item ${res.essayCorrect ? "is-correct" : "is-wrong"}">
-              <div class="quest-eval-item-title">
-                ${res.essayCorrect ? "✅ [Soal Esai Perintah - Tepat]" : "❌ [Soal Esai Perintah - Kurang Tepat]"} ${lvl.verification.essayQuestion.question}
-              </div>
-              <div class="quest-eval-item-text">
-                <strong>Jawaban yang kamu ketik:</strong> <code>${res.userEssay || "(kosong)"}</code><br/>
-                <strong>Format Baku yang Diterima:</strong> <code>${lvl.verification.essayQuestion.correctAnswerDesc}</code><br/>
-                💡 <em>${lvl.verification.essayQuestion.explanation}</em>
-              </div>
+              <div class="quest-eval-item-title">${res.essayCorrect ? "✅ [Soal Esai - Tepat]" : "❌ [Soal Esai - Kurang Tepat]"} ${lvl.verification.essayQuestion.question}</div>
+              <div class="quest-eval-item-text"><strong>Jawabanmu:</strong> <code>${res.userEssay || "(kosong)"}</code><br/><strong>Format Baku:</strong> <code>${lvl.verification.essayQuestion.correctAnswerDesc}</code><br/>💡 <em>${lvl.verification.essayQuestion.explanation}</em></div>
             </div>
           </div>
 
@@ -2905,9 +4260,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <span>Lanjut ke Level ${lvl.level + 1}</span>
                   <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
                 </button>
-              ` : `
-                <div style="font-weight: 800; color: #059669; font-size: 1.1rem; padding: 0.5rem 0;">👑 SELURUH LEVEL LAB QUEST TELAH DITUNTASKAN DENGAN SUKSES!</div>
-              `}
+              ` : `<div style="font-weight: 800; color: #059669; font-size: 1.1rem; padding: 0.5rem 0;">👑 SELURUH LEVEL LAB QUEST TELAH DITUNTASKAN DENGAN SUKSES!</div>`}
             ` : `
               <button type="button" class="btn-quest-confirm-done" id="btnRetryQuestValidation" style="background: linear-gradient(135deg, #0070ba, #049fd9);">
                 <i data-lucide="rotate-ccw" style="width: 16px; height: 16px;"></i>
@@ -2929,23 +4282,16 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <form id="questVerifyForm">
-            <!-- Soal PG 1 -->
             <div class="quest-verify-q-box">
               <div class="quest-verify-q-title">1. ${pg1.question}</div>
-              <div class="quest-verify-options">
-                ${pg1OptionsHtml}
-              </div>
+              <div class="quest-verify-options">${pg1OptionsHtml}</div>
             </div>
 
-            <!-- Soal PG 2 -->
             <div class="quest-verify-q-box">
               <div class="quest-verify-q-title">2. ${pg2.question}</div>
-              <div class="quest-verify-options">
-                ${pg2OptionsHtml}
-              </div>
+              <div class="quest-verify-options">${pg2OptionsHtml}</div>
             </div>
 
-            <!-- Soal Esai -->
             <div class="quest-verify-q-box">
               <div class="quest-verify-q-title">3. [Esai Perintah Kunci] ${lvl.verification.essayQuestion.question}</div>
               <input type="text" class="quest-essay-input" id="questEssayInput" placeholder="${lvl.verification.essayQuestion.placeholder}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required />
@@ -2977,7 +4323,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     questActiveArena.innerHTML = `
-      <!-- Briefing Scenario & Header -->
       <div class="quest-briefing-card">
         <div class="quest-briefing-title">
           <i data-lucide="laptop" style="width: 18px; height: 18px;"></i>
@@ -2986,7 +4331,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <p class="quest-briefing-story">${lvl.story}</p>
       </div>
 
-      <!-- Tasks Checklist to do in Laptop -->
       <div class="quest-tasks-box">
         <div class="quest-tasks-header">
           <i data-lucide="list-checks" style="width: 18px; height: 18px;"></i>
@@ -2997,7 +4341,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
 
-      <!-- Clue Box -->
       <div class="quest-hint-box">
         <i data-lucide="lightbulb" class="quest-hint-icon" style="width: 18px; height: 18px;"></i>
         <div class="quest-hint-text">
@@ -3005,11 +4348,9 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
 
-      <!-- Action / Verification Section -->
       ${verificationSectionHtml}
     `;
 
-    // Event handler: Click "Saya Sudah Selesai Mengerjakan"
     const btnConfirm = document.getElementById("btnConfirmDoneWorking");
     if (btnConfirm) {
       btnConfirm.addEventListener("click", () => {
@@ -3017,13 +4358,10 @@ document.addEventListener("DOMContentLoaded", () => {
         questEvaluationResult = null;
         renderActiveQuestArena();
         const verifySection = document.getElementById("questVerifyFormSection");
-        if (verifySection) {
-          verifySection.scrollIntoView({ behavior: "smooth" });
-        }
+        if (verifySection) verifySection.scrollIntoView({ behavior: "smooth" });
       });
     }
 
-    // Event handler: Cancel verify
     const btnCancel = document.getElementById("btnCancelVerify");
     if (btnCancel) {
       btnCancel.addEventListener("click", () => {
@@ -3032,7 +4370,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Event handler: Submit verification form
     const verifyForm = document.getElementById("questVerifyForm");
     if (verifyForm) {
       verifyForm.addEventListener("submit", (e) => {
@@ -3041,12 +4378,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const pg2SelectedEl = verifyForm.querySelector('input[name="quest_pg2"]:checked');
         const essayInputEl = document.getElementById("questEssayInput");
 
-        if (!pg1SelectedEl) {
-          alert("Silakan pilih jawaban untuk Soal Pilihan Ganda No. 1!");
-          return;
-        }
-        if (!pg2SelectedEl) {
-          alert("Silakan pilih jawaban untuk Soal Pilihan Ganda No. 2!");
+        if (!pg1SelectedEl || !pg2SelectedEl) {
+          alert("Silakan jawab semua pertanyaan pilihan ganda!");
           return;
         }
 
@@ -3058,7 +4391,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Event handler: Next level button
     const btnNextLvl = document.getElementById("btnNextQuestLevel");
     if (btnNextLvl) {
       btnNextLvl.addEventListener("click", () => {
@@ -3072,7 +4404,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Event handler: Retry validation button
     const btnRetry = document.getElementById("btnRetryQuestValidation");
     if (btnRetry) {
       btnRetry.addEventListener("click", () => {
@@ -3089,7 +4420,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const pg1Correct = (pg1Choice === lvl.verification.pgQuestions[0].correctIndex);
     const pg2Correct = (pg2Choice === lvl.verification.pgQuestions[1].correctIndex);
 
-    // Normalize essay string for lenient keyword comparison
     const normEssay = userEssay.toLowerCase().replace(/\s+/g, " ").trim();
     const essayCorrect = lvl.verification.essayQuestion.validKeywords.some(kw => {
       const normKw = kw.toLowerCase().trim();
@@ -3100,9 +4430,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const passed = (score === 3);
 
     if (passed) {
-      // Award XP
       questTotalXp += lvl.xpReward;
-      // Unlock next level if currently on highest unlocked
       if (lvl.level === questUnlockedLevel && questUnlockedLevel < ciscoQuestLevels.length) {
         questUnlockedLevel++;
         localStorage.setItem("ciscolab_quest_unlocked", questUnlockedLevel);
@@ -3128,20 +4456,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initQuestGame() {
     updateQuestPlayerHUD();
-    if (typeof ciscoQuestLevels === "undefined" || !Array.isArray(ciscoQuestLevels) || ciscoQuestLevels.length === 0) {
-      if (questActiveArena) {
-        questActiveArena.innerHTML = `
-          <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-dim);">
-            <i data-lucide="alert-triangle" style="width: 36px; height: 36px; margin: 0 auto 0.5rem; color: var(--cisco-gold);"></i>
-            <p style="font-weight: 700; color: var(--cisco-navy);">Data Lab Quest (data/quests.js) belum termuat.</p>
-            <p style="font-size: 0.85rem; margin-top: 0.25rem;">Pastikan file <code>data/quests.js</code> ikut terupload ke repository GitHub Anda.</p>
-          </div>
-        `;
-        if (window.lucide) window.lucide.createIcons();
-      }
-      return;
-    }
-
     renderQuestLevelsMap();
     renderActiveQuestArena();
 
@@ -3163,24 +4477,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===================================================================
-  // 8. RENDER KAMUS PERINTAH CISCO IOS (DICTIONARY VIEW)
+  // I. RENDER KAMUS PERINTAH CISCO IOS (DICTIONARY VIEW)
   // ===================================================================
+  const cmdCardsGrid = document.getElementById("cmdCardsGrid");
   function renderDictionary(cmds) {
     if (!cmdCardsGrid) return;
     cmdCardsGrid.innerHTML = "";
-
-    if (!cmds || !Array.isArray(cmds) || cmds.length === 0) {
-      const isMissing = typeof ciscoCommands === "undefined";
-      cmdCardsGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; color: var(--text-dim);">
-          <i data-lucide="alert-circle" style="width: 36px; height: 36px; margin: 0 auto 0.5rem; color: var(--cisco-gold);"></i>
-          <p style="font-weight: 700; color: var(--cisco-navy);">${isMissing ? 'Data Perintah CLI (data/commands.js) belum termuat.' : 'Tidak ada perintah yang sesuai pencarian.'}</p>
-          ${isMissing ? '<p style="font-size: 0.85rem; margin-top: 0.25rem;">Pastikan file <code>data/commands.js</code> ikut terupload ke repository GitHub Anda.</p>' : ''}
-        </div>
-      `;
-      if (window.lucide) window.lucide.createIcons();
-      return;
-    }
 
     cmds.forEach(item => {
       const card = document.createElement("div");
@@ -3208,7 +4510,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===================================================================
-  // 9. SUBNETTING & IP ROUTE CALCULATOR ENGINE
+  // J. SUBNETTING & IP ROUTE CALCULATOR
   // ===================================================================
   const calcIpInput = document.getElementById("calcIpInput");
   const calcCidrInput = document.getElementById("calcCidrInput");
@@ -3220,14 +4522,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const cidr = calcCidrInput ? parseInt(calcCidrInput.value, 10) || 24 : 24;
     const nextHop = calcNextHopInput ? calcNextHopInput.value.trim() || "10.10.10.2" : "10.10.10.2";
 
-    // Validate IP
     const parts = ipStr.split(".").map(p => parseInt(p, 10));
     if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255)) {
       alert("Masukkan format IP Address yang valid (contoh: 192.168.10.0)");
       return;
     }
 
-    // Calculate Subnet Mask & Wildcard
     const maskBinary = "".padStart(cidr, "1").padEnd(32, "0");
     const maskParts = [
       parseInt(maskBinary.substring(0, 8), 2),
@@ -3236,51 +4536,25 @@ document.addEventListener("DOMContentLoaded", () => {
       parseInt(maskBinary.substring(24, 32), 2)
     ];
     const subnetMaskStr = maskParts.join(".");
-
     const wildcardParts = maskParts.map(p => 255 - p);
     const wildcardStr = wildcardParts.join(".");
 
-    // Calculate Network ID & Broadcast
     const ipNum = (parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3];
     const maskNum = (maskParts[0] << 24) | (maskParts[1] << 16) | (maskParts[2] << 8) | maskParts[3];
-    
     const netNum = (ipNum & maskNum) >>> 0;
     const broadNum = (netNum | (~maskNum >>> 0)) >>> 0;
 
-    const netIpStr = [
-      (netNum >>> 24) & 255,
-      (netNum >>> 16) & 255,
-      (netNum >>> 8) & 255,
-      netNum & 255
-    ].join(".");
-
-    const broadIpStr = [
-      (broadNum >>> 24) & 255,
-      (broadNum >>> 16) & 255,
-      (broadNum >>> 8) & 255,
-      broadNum & 255
-    ].join(".");
-
+    const netIpStr = [(netNum >>> 24) & 255, (netNum >>> 16) & 255, (netNum >>> 8) & 255, netNum & 255].join(".");
+    const broadIpStr = [(broadNum >>> 24) & 255, (broadNum >>> 16) & 255, (broadNum >>> 8) & 255, broadNum & 255].join(".");
     const totalHosts = cidr === 32 ? 1 : cidr === 31 ? 2 : Math.pow(2, 32 - cidr) - 2;
 
     let rangeStr = "-";
     if (cidr <= 30) {
-      const firstHost = [
-        (netNum >>> 24) & 255,
-        (netNum >>> 16) & 255,
-        (netNum >>> 8) & 255,
-        (netNum & 255) + 1
-      ].join(".");
-      const lastHost = [
-        (broadNum >>> 24) & 255,
-        (broadNum >>> 16) & 255,
-        (broadNum >>> 8) & 255,
-        (broadNum & 255) - 1
-      ].join(".");
+      const firstHost = [(netNum >>> 24) & 255, (netNum >>> 16) & 255, (netNum >>> 8) & 255, (netNum & 255) + 1].join(".");
+      const lastHost = [(broadNum >>> 24) & 255, (broadNum >>> 16) & 255, (broadNum >>> 8) & 255, (broadNum & 255) - 1].join(".");
       rangeStr = `${firstHost} - ${lastHost}`;
     }
 
-    // Update DOM
     const resNet = document.getElementById("resNetwork");
     const resMask = document.getElementById("resSubnetMask");
     const resWild = document.getElementById("resWildcard");
@@ -3295,15 +4569,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (resBroad) resBroad.textContent = broadIpStr;
     if (resRange) resRange.textContent = rangeStr;
     if (resHosts) resHosts.textContent = `${totalHosts > 0 ? totalHosts : 0} Host`;
-    
-    if (resRoute) {
-      resRoute.textContent = `ip route ${netIpStr} ${subnetMaskStr} ${nextHop}`;
-    }
+    if (resRoute) resRoute.textContent = `ip route ${netIpStr} ${subnetMaskStr} ${nextHop}`;
   }
 
-  if (btnCalculate) {
-    btnCalculate.addEventListener("click", calculateSubnetAndRoute);
-  }
+  if (btnCalculate) btnCalculate.addEventListener("click", calculateSubnetAndRoute);
 
   const btnCopyGenRoute = document.getElementById("btnCopyGenRoute");
   if (btnCopyGenRoute) {
@@ -3314,7 +4583,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===================================================================
-  // 10. FILTER & SEARCH HANDLER
+  // K. FILTER & SEARCH HANDLER
   // ===================================================================
   function applyFilters() {
     const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
@@ -3328,7 +4597,6 @@ document.addEventListener("DOMContentLoaded", () => {
         mod.description.toLowerCase().includes(query) ||
         mod.devices.some(d => d.toLowerCase().includes(query)) ||
         mod.cliSteps.some(step => step.commands.some(c => c.cmd.toLowerCase().includes(query)));
-      
       return matchCat && matchSearch;
     });
 
@@ -3344,18 +4612,15 @@ document.addEventListener("DOMContentLoaded", () => {
       renderWorkspace(filtered[0]);
     }
 
-    if (typeof ciscoCommands !== "undefined" && Array.isArray(ciscoCommands)) {
-      const filteredCmds = ciscoCommands.filter(c => 
-        !query ||
-        c.command.toLowerCase().includes(query) ||
-        c.purpose.toLowerCase().includes(query) ||
-        c.explanation.toLowerCase().includes(query) ||
-        c.category.toLowerCase().includes(query)
-      );
-      renderDictionary(filteredCmds);
-    } else {
-      renderDictionary([]);
-    }
+    const allCmds = getCommands();
+    const filteredCmds = allCmds.filter(c => 
+      !query ||
+      c.command.toLowerCase().includes(query) ||
+      c.purpose.toLowerCase().includes(query) ||
+      c.explanation.toLowerCase().includes(query) ||
+      c.category.toLowerCase().includes(query)
+    );
+    renderDictionary(filteredCmds);
   }
 
   filterChips.forEach((chip) => {
@@ -3372,9 +4637,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===================================================================
-  // 11. NAVIGATION VIEW SWITCHER (Desktop Nav & Mobile Bottom Nav)
+  // L. VIEW SWITCHER (NAVBAR DESKTOP & MOBILE BOTTOM NAV)
   // ===================================================================
   function switchView(view) {
+    currentView = view;
+
     // Update Desktop Nav
     navBtns.forEach((b) => {
       if (b.getAttribute("data-view") === view) b.classList.add("active");
@@ -3387,24 +4654,36 @@ document.addEventListener("DOMContentLoaded", () => {
       else b.classList.remove("active");
     });
 
-    // Hide all tab views first
+    // Hide all views
     if (sectionModules) sectionModules.style.display = "none";
+    if (sectionTroubleshoot) sectionTroubleshoot.style.display = "none";
+    if (sectionSandbox) sectionSandbox.style.display = "none";
     if (sectionQuest) sectionQuest.style.display = "none";
     if (sectionQuiz) sectionQuiz.style.display = "none";
+    if (sectionCheatsheet) sectionCheatsheet.style.display = "none";
     if (sectionDictionary) sectionDictionary.classList.remove("active");
     if (sectionCalculator) sectionCalculator.classList.remove("active");
 
     if (view === "modules") {
       sectionModules.style.display = "block";
+    } else if (view === "troubleshoot") {
+      sectionTroubleshoot.style.display = "block";
+      initTroubleshootEngine();
+    } else if (view === "sandbox") {
+      sectionSandbox.style.display = "block";
+      initSandboxEngine();
     } else if (view === "quest") {
       sectionQuest.style.display = "block";
       initQuestGame();
     } else if (view === "quiz") {
       sectionQuiz.style.display = "block";
       initQuizEngine();
+    } else if (view === "cheatsheet") {
+      sectionCheatsheet.style.display = "block";
+      renderCheatsheet();
     } else if (view === "dictionary") {
       sectionDictionary.classList.add("active");
-      renderDictionary(typeof ciscoCommands !== "undefined" ? ciscoCommands : []);
+      renderDictionary(getCommands());
     } else if (view === "calculator") {
       sectionCalculator.classList.add("active");
       calculateSubnetAndRoute();
@@ -3425,7 +4704,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===================================================================
-  // 12. HELPER COPY TO CLIPBOARD & TOAST
+  // M. HELPER TOAST & CLIPBOARD
   // ===================================================================
   function copyToClipboard(text, msg) {
     navigator.clipboard.writeText(text).then(() => {
@@ -3447,5 +4726,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial Boot
   applyFilters();
   calculateSubnetAndRoute();
-  renderDictionary(typeof ciscoCommands !== "undefined" ? ciscoCommands : []);
+  renderDictionary(getCommands());
+  initCommandPalette();
 });

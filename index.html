@@ -52,13 +52,26 @@
           <i data-lucide="book-open"></i>
           <span>Modul Praktikum</span>
         </button>
+        <button type="button" class="nav-btn" data-view="troubleshoot">
+          <i data-lucide="wrench"></i>
+          <span>Troubleshoot Lab</span>
+          <span class="badge-pill-hot">Kasus RTO</span>
+        </button>
+        <button type="button" class="nav-btn" data-view="sandbox">
+          <i data-lucide="terminal-square"></i>
+          <span>CLI Sandbox</span>
+        </button>
         <button type="button" class="nav-btn" data-view="quest">
           <i data-lucide="gamepad-2"></i>
-          <span>Lab Quest (Game)</span>
+          <span>Lab Quest</span>
         </button>
         <button type="button" class="nav-btn" data-view="quiz">
           <i data-lucide="trophy"></i>
           <span>Kuis Interaktif</span>
+        </button>
+        <button type="button" class="nav-btn" data-view="cheatsheet">
+          <i data-lucide="file-text"></i>
+          <span>Cheatsheet TKJ</span>
         </button>
         <button type="button" class="nav-btn" data-view="dictionary">
           <i data-lucide="terminal"></i>
@@ -72,6 +85,11 @@
 
       <!-- Right Action Info -->
       <div class="nav-right-actions">
+        <button type="button" class="btn-cmd-palette" id="btnOpenCmdPalette" title="Pencarian Cepat Perintah & Modul (Tekan Ctrl + K)">
+          <i data-lucide="search"></i>
+          <span class="cmd-palette-label">Cari Cepat</span>
+          <kbd class="kbd-shortcut">Ctrl K</kbd>
+        </button>
         <a href="https://www.netacad.com/courses/packet-tracer" target="_blank" rel="noopener noreferrer"
           class="btn-icon-mode" title="Official Cisco Packet Tracer">
           <i data-lucide="external-link"></i>
@@ -85,7 +103,7 @@
   <section class="hero-section" id="home">
     <div class="container">
       <div class="hero-badge-top">
-        <span class="pulse-dot"></span> Panduan Interaktif Praktikum & UKK TKJ
+        <span class="pulse-dot"></span> Web App By Fauzan
       </div>
       <h1 class="hero-title">
         Kuasai <span class="gradient-cisco">Cisco Packet Tracer</span><br />Lebih Cepat & Terarah
@@ -376,6 +394,198 @@
     </div>
   </section>
 
+  <!-- VIEW 6: TROUBLESHOOT LAB SIMULATOR (STUDI KASUS ERROR & RTO) -->
+  <section class="main-app-section app-tab-view" id="sectionTroubleshoot" style="display: none;">
+    <div class="container">
+      <div class="troubleshoot-container">
+        
+        <!-- Header & HUD Stats -->
+        <div class="troubleshoot-header-wrap">
+          <div style="text-align: center; margin-bottom: 1.5rem;">
+            <span class="badge-category"><i data-lucide="wrench"></i> Kasus Nyata UKK / LKS TKJ</span>
+            <h2 style="font-size: 2rem; font-weight: 800; margin-top: 0.5rem; color: var(--cisco-navy);">Troubleshoot Lab Simulator</h2>
+            <p style="color: var(--text-muted); max-width: 650px; margin: 0.5rem auto 0;">
+              Latih insting analis jaringanmu! Analisis gejala error, telaah output terminal Cisco IOS, tentukan akar masalah (<em>root cause</em>), dan temukan perintah perbaikannya.
+            </p>
+          </div>
+
+          <div class="troubleshoot-hud-bar">
+            <div class="hud-stat-item">
+              <span class="hud-label">Kasus Terpecahkan</span>
+              <span class="hud-value" id="tbSolvedCount">0 / 6</span>
+            </div>
+            <div class="hud-stat-item hud-streak">
+              <span class="hud-label">Poin Analis XP</span>
+              <span class="hud-value" id="tbXpVal">0 XP</span>
+            </div>
+            <div class="hud-stat-item">
+              <span class="hud-label">Akurasi Diagnosa</span>
+              <span class="hud-value" id="tbAccuracyVal">100%</span>
+            </div>
+            <div class="hud-stat-item">
+              <span class="hud-label">Peringkat Troubleshooter</span>
+              <span class="hud-value" id="tbRankTitle" style="font-size: 0.95rem;">🌱 Junior Helpdesk</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="quiz-filter-row" style="margin-bottom: 1.25rem;">
+          <span class="quiz-filter-label"><i data-lucide="filter" style="width: 14px; height: 14px; vertical-align: middle;"></i> Kategori Error:</span>
+          <div class="quiz-filter-chips" id="tbFilterChips">
+            <button type="button" class="q-chip active" data-tbcat="all">Semua Kasus Error</button>
+            <button type="button" class="q-chip" data-tbcat="vlan">VLAN & Trunk</button>
+            <button type="button" class="q-chip" data-tbcat="routing">Routing & Gateway</button>
+            <button type="button" class="q-chip" data-tbcat="dhcp">DHCP & IP</button>
+            <button type="button" class="q-chip" data-tbcat="nat">NAT & Security</button>
+          </div>
+        </div>
+
+        <!-- Troubleshoot Cards Arena -->
+        <div class="troubleshoot-grid" id="tbCasesGrid">
+          <!-- Diisi via JS -->
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 7: WEB CLI SIMULATOR SANDBOX (INTERACTIVE CISCO TERMINAL) -->
+  <section class="main-app-section app-tab-view" id="sectionSandbox" style="display: none;">
+    <div class="container">
+      <div class="sandbox-container">
+        
+        <div style="text-align: center; margin-bottom: 1.25rem;">
+          <span class="badge-category"><i data-lucide="terminal-square"></i> Web Cisco IOS Sandbox</span>
+          <h2 style="font-size: 2rem; font-weight: 800; margin-top: 0.5rem; color: var(--cisco-navy);">Simulasi Terminal Cisco IOS di Browser</h2>
+          <p style="color: var(--text-muted); max-width: 650px; margin: 0.5rem auto 0;">
+            Latihan mengetik perintah Cisco IOS langsung di browsermu tanpa membuka Packet Tracer. Mendukung prompt bertingkat, tombol <kbd class="kbd-badge">Tab</kbd> untuk <em>autocomplete</em>, dan <kbd class="kbd-badge">?</kbd> untuk bantuan perintah.
+          </p>
+        </div>
+
+        <!-- Device Selector Bar & Missions -->
+        <div class="sandbox-toolbar">
+          <div class="sandbox-device-pills">
+            <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase;">Pilih Perangkat:</span>
+            <button type="button" class="sandbox-dev-btn active" data-dev="router">
+              <i data-lucide="server"></i> Router0 (Cisco 2911)
+            </button>
+            <button type="button" class="sandbox-dev-btn" data-dev="switch">
+              <i data-lucide="split"></i> Switch0 (Cisco 2960)
+            </button>
+            <button type="button" class="sandbox-dev-btn" data-dev="isp">
+              <i data-lucide="globe"></i> ISP-Gateway (WAN)
+            </button>
+          </div>
+
+          <div class="sandbox-tools-actions">
+            <button type="button" class="btn-sandbox-action" id="btnResetTerminal">
+              <i data-lucide="rotate-ccw"></i> Reset
+            </button>
+            <button type="button" class="btn-sandbox-action" id="btnClearScreen">
+              <i data-lucide="eraser"></i> Bersihkan
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Missions Bar -->
+        <div class="sandbox-missions-box">
+          <div class="sandbox-missions-title">
+            <i data-lucide="target" style="color: var(--cisco-blue);"></i>
+            <span>Tantangan Latihan Cepat (<em>Interactive Missions</em>):</span>
+          </div>
+          <div class="sandbox-missions-chips" id="sandboxMissionChips">
+            <button type="button" class="mission-chip active" data-mid="1">🎯 1. Ganti Hostname</button>
+            <button type="button" class="mission-chip" data-mid="2">🎯 2. Pasang Enable Secret</button>
+            <button type="button" class="mission-chip" data-mid="3">🎯 3. Aktifkan IP G0/0</button>
+            <button type="button" class="mission-chip" data-mid="4">🎯 4. Buat VLAN 10</button>
+            <button type="button" class="mission-chip" data-mid="5">🎯 5. Simpan ke NVRAM</button>
+          </div>
+          <div class="sandbox-mission-desc" id="sandboxMissionDesc">
+            <strong>Misi 1:</strong> Masuk ke Global Configuration mode, lalu ubah hostname router menjadi <code>R1-TKJ</code> menggunakan perintah <code>hostname R1-TKJ</code>.
+          </div>
+        </div>
+
+        <!-- Interactive Terminal Screen -->
+        <div class="sandbox-terminal-window">
+          <div class="terminal-top-bar">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+              <span class="terminal-title-text" id="sandboxTermTitle">Cisco IOS CLI Simulator — Router0 (Cisco 2911)</span>
+            </div>
+            <div style="display: flex; gap: 0.35rem; align-items: center;">
+              <span style="font-size: 0.72rem; color: #94a3b8;">Ketik <strong>?</strong> atau <strong>help</strong> untuk bantuan</span>
+            </div>
+          </div>
+
+          <div class="sandbox-terminal-body" id="sandboxTermBody">
+            <div class="sandbox-log-line banner-line">
+              Cisco IOS Software, C2900 Software (C2900-UNIVERSALK9-M), Version 15.1(4)M4, RELEASE SOFTWARE (fc2)<br/>
+              Technical Support: http://www.cisco.com/techsupport<br/>
+              Copyright (c) 1986-2026 by Cisco Systems, Inc.<br/>
+              --- Selamat Datang di CiscoLab Interactive Web Terminal Sandbox ---<br/>
+              Ketik <strong>enable</strong> untuk masuk ke Privileged Mode, atau ketik <strong>?</strong> untuk melihat daftar perintah.
+            </div>
+          </div>
+
+          <!-- Input line -->
+          <div class="sandbox-input-line">
+            <span class="sandbox-prompt" id="sandboxPrompt">Router&gt;</span>
+            <input type="text" id="sandboxInput" class="sandbox-cli-input" placeholder="Ketik perintah Cisco IOS (contoh: enable, configure terminal, show ip int br)..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <button type="button" class="btn-sandbox-send" id="btnSandboxSend" title="Kirim Perintah">
+              <i data-lucide="corner-down-left"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Terminal Helper Shortcuts Bar -->
+        <div class="sandbox-quick-keys-row">
+          <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-dim);">Perintah Cepat:</span>
+          <button type="button" class="quick-cmd-key" data-cmd="enable">enable</button>
+          <button type="button" class="quick-cmd-key" data-cmd="configure terminal">conf t</button>
+          <button type="button" class="quick-cmd-key" data-cmd="show ip interface brief">show ip int br</button>
+          <button type="button" class="quick-cmd-key" data-cmd="show ip route">show ip route</button>
+          <button type="button" class="quick-cmd-key" data-cmd="show vlan brief">show vlan brief</button>
+          <button type="button" class="quick-cmd-key" data-cmd="show running-config">show run</button>
+          <button type="button" class="quick-cmd-key" data-cmd="write memory">write memory</button>
+          <button type="button" class="quick-cmd-key" data-cmd="exit">exit</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 8: CHEATSHEET & RANGKUMAN SAKTI CISCO IOS TKJ -->
+  <section class="main-app-section app-tab-view" id="sectionCheatsheet" style="display: none;">
+    <div class="container">
+      <div class="cheatsheet-container">
+        
+        <div class="cheatsheet-header-row">
+          <div>
+            <span class="badge-category"><i data-lucide="file-text"></i> Contekan & Rangkuman Resmi</span>
+            <h2 style="font-size: 2rem; font-weight: 800; margin-top: 0.4rem; color: var(--cisco-navy);">Cisco IOS CLI Cheatsheet TKJ</h2>
+            <p style="color: var(--text-muted); font-size: 0.92rem;">
+              Panduan sintaks cepat dan rumus sakti ujian praktikum & UKK TKJ. Siap dicetak (A4) atau disimpan sebagai PDF.
+            </p>
+          </div>
+
+          <div class="cheatsheet-actions">
+            <button type="button" class="btn-print-cheatsheet" id="btnPrintCheatsheet">
+              <i data-lucide="printer"></i> Cetak / Simpan PDF
+            </button>
+          </div>
+        </div>
+
+        <div class="cheatsheet-content-grid" id="cheatsheetContent">
+          <!-- Diisi via JS -->
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- FULLSCREEN TOPOLOGY ZOOM MODAL -->
   <div class="topo-modal" id="topologyModal" style="display: none;">
     <div class="topo-modal-backdrop" id="topoModalBackdrop"></div>
@@ -401,17 +611,50 @@
     </div>
   </div>
 
+  <!-- GLOBAL COMMAND PALETTE MODAL (CTRL + K) -->
+  <div class="cmd-palette-modal" id="cmdPaletteModal" style="display: none;">
+    <div class="cmd-palette-backdrop" id="cmdPaletteBackdrop"></div>
+    <div class="cmd-palette-dialog">
+      <div class="cmd-palette-search-bar">
+        <i data-lucide="search" class="cmd-palette-icon"></i>
+        <input type="text" id="cmdPaletteInput" class="cmd-palette-input" placeholder="Cari modul, perintah CLI, kasus troubleshoot, atau cheatsheet..." autocomplete="off" />
+        <button type="button" class="btn-close-cmd-pal" id="btnCloseCmdPalette">ESC</button>
+      </div>
+
+      <div class="cmd-palette-results" id="cmdPaletteResults">
+        <!-- Diisi dinamis via JS -->
+      </div>
+
+      <div class="cmd-palette-footer">
+        <div class="cmd-palette-hint">
+          <span><kbd class="kbd-mini">&uarr;</kbd> <kbd class="kbd-mini">&darr;</kbd> Navigasi</span>
+          <span><kbd class="kbd-mini">Enter</kbd> Pilih</span>
+          <span><kbd class="kbd-mini">ESC</kbd> Tutup</span>
+        </div>
+        <span style="font-size: 0.72rem; color: var(--text-dim); font-weight: 700;">CiscoLab Instant Search</span>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST NOTIFICATION -->
   <div class="toast-notice" id="toastNotice">
     <i data-lucide="check-circle" style="color: var(--cisco-emerald);"></i>
     <span>Perintah berhasil disalin ke clipboard!</span>
   </div>
 
-  <!-- MOBILE BOTTOM NAVIGATION (Khusus Tampilan Smartphone - 5 Tab) -->
+  <!-- MOBILE BOTTOM NAVIGATION (Khusus Tampilan Smartphone) -->
   <nav class="mobile-bottom-nav">
     <button type="button" class="mobile-nav-btn active" data-view="modules">
       <i data-lucide="book-open"></i>
       <span>Modul</span>
+    </button>
+    <button type="button" class="mobile-nav-btn" data-view="troubleshoot">
+      <i data-lucide="wrench"></i>
+      <span>Trouble</span>
+    </button>
+    <button type="button" class="mobile-nav-btn" data-view="sandbox">
+      <i data-lucide="terminal-square"></i>
+      <span>Sandbox</span>
     </button>
     <button type="button" class="mobile-nav-btn" data-view="quest">
       <i data-lucide="gamepad-2"></i>
@@ -421,13 +664,9 @@
       <i data-lucide="trophy"></i>
       <span>Kuis</span>
     </button>
-    <button type="button" class="mobile-nav-btn" data-view="dictionary">
-      <i data-lucide="terminal"></i>
-      <span>CLI</span>
-    </button>
-    <button type="button" class="mobile-nav-btn" data-view="calculator">
-      <i data-lucide="calculator"></i>
-      <span>Subnet</span>
+    <button type="button" class="mobile-nav-btn" data-view="cheatsheet">
+      <i data-lucide="file-text"></i>
+      <span>Cheat</span>
     </button>
   </nav>
 
