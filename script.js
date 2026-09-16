@@ -4728,4 +4728,5 @@ end`);
   calculateSubnetAndRoute();
   renderDictionary(getCommands());
   initCommandPalette();
+  if (window.lucide) window.lucide.createIcons();
 });

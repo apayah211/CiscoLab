@@ -289,6 +289,29 @@ body {
   text-decoration: none;
 }
 
+.btn-icon-mode:hover {
+  border-color: var(--cisco-blue);
+  color: var(--cisco-blue);
+  background: #f0f9ff;
+  transform: translateY(-2px);
+}
+
+.btn-icon-ig:hover {
+  border-color: #e1306c;
+  color: #e1306c;
+  background: #fff1f2;
+  box-shadow: 0 4px 12px rgba(225, 48, 108, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-icon-gh:hover {
+  border-color: #0f172a;
+  color: #0f172a;
+  background: #f1f5f9;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+  transform: translateY(-2px);
+}
+
 /* ===================================================================
    HERO SECTION
    =================================================================== */
@@ -311,6 +334,21 @@ body {
   margin-bottom: 1rem;
   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.12);
   max-width: 100%;
+}
+
+.hero-contact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #e1306c;
+  text-decoration: none;
+  font-weight: 800;
+  transition: var(--transition);
+}
+
+.hero-contact-chip:hover {
+  color: #be185d;
+  text-decoration: underline;
 }
 
 .pulse-dot {
@@ -1542,15 +1580,186 @@ body {
   pointer-events: auto;
 }
 
+/* ===================================================================
+   FOOTER & CONTACT SECTION
+   =================================================================== */
 .app-footer {
   border-top: 2px solid #e2e8f0;
   background: #ffffff;
-  padding: 2rem 0;
-  text-align: center;
+  padding: 3.5rem 0 2rem;
   color: var(--text-dim);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 600;
   width: 100%;
+  margin-top: 3.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.footer-top-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 3rem;
+  align-items: start;
+  margin-bottom: 2.5rem;
+}
+
+.footer-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+
+.footer-desc {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.footer-col-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--cisco-navy);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.footer-contact-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-ig:hover {
+  border-color: #f43f5e;
+  background: #fff1f2;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(244, 63, 94, 0.16);
+}
+
+.card-gh:hover {
+  border-color: #0f172a;
+  background: #f1f5f9;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+}
+
+.contact-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-card-icon i,
+.contact-card-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ig-gradient {
+  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(221, 42, 123, 0.3);
+}
+
+.gh-gradient {
+  background: linear-gradient(135deg, #24292e, #0f172a);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+}
+
+.contact-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.contact-platform {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+}
+
+.contact-handle {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--cisco-navy);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contact-card-arrow {
+  margin-left: auto;
+  color: var(--text-dim);
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.contact-card-arrow i,
+.contact-card-arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+.contact-card:hover .contact-card-arrow {
+  color: var(--cisco-navy);
+  transform: translate(2px, -2px);
+}
+
+.footer-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1.5px solid #f1f5f9;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-bottom-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge-status-online {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #047857;
+  padding: 0.25rem 0.65rem;
+  border-radius: 99px;
+  font-size: 0.74rem;
+  font-weight: 700;
 }
 
 
